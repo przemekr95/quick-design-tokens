@@ -1,0 +1,19 @@
+{
+  "name": "@przemekr95/quick-design-tokens",
+  "version": "0.0.4",
+  "description": "Design tokens for my project",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "scripts": {
+    "build": "node config/style-dictionary.config.mjs && tsc",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.4.0",
+    "typescript": "^5.8.3"
+  }
+}

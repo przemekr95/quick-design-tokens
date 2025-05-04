@@ -1,0 +1,10 @@
+{
+  "color": {
+    "background": {
+      "primary": {
+        "value": "#ff0000",
+        "type": "color"
+      }
+    }
+  }
+}
