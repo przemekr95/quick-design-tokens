@@ -1,10 +1,12 @@
 {
-  "color": {
-    "background": {
-      "primary": {
-        "value": "#ff0000",
-        "type": "color"
-      }
+  "colors": {
+    "primary": {
+      "description": "",
+      "value": "#e58e26"
+    },
+    "secondary": {
+      "description": "",
+      "value": "#b71540"
     }
   }
 }

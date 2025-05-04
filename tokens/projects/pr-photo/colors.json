@@ -1,6 +1,16 @@
 {
-  "color": {
-    "primary": { "value": "#ff4081" },
-    "background": { "value": "#f5f5f5" }
+  "colors": {
+    "primary": {
+      "description": "",
+      "value": "#079992"
+    },
+    "secondary": {
+      "description": "",
+      "value": "#60a3bc"
+    },
+    "third": {
+      "description": "",
+      "value": "#0c2461"
+    }
   }
 }
