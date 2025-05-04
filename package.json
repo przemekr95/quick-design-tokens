@@ -1,6 +1,6 @@
 {
   "name": "@przemekr95/quick-design-tokens",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Design tokens for my project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
