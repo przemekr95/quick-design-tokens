@@ -11,6 +11,14 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./dist/types/index.d.ts"
+    },
+    "./scss": {
+      "import": "./dist/scss/tokens.scss",
+      "require": "./dist/scss/tokens.scss"
+    },
+    "./scss/*": {
+      "import": "./dist/scss/*.scss",
+      "require": "./dist/scss/*.scss"
     }
   },
   "publishConfig": {
@@ -18,7 +26,8 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run build:scss",
+    "build:scss": "node scripts/generate-scss.js",
     "dev": "rollup -c -w",
     "clean": "rimraf dist",
     "lint": "eslint src --ext .ts",
@@ -32,7 +41,9 @@
     "design-system",
     "css",
     "typescript",
-    "react"
+    "react",
+    "scss",
+    "sass"
   ],
   "author": "przemekr95",
   "license": "MIT",
@@ -44,6 +55,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/lodash.merge": "^4.6.7",
+    "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "eslint": "^8.16.0",

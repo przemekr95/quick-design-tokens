@@ -18,5 +18,5 @@ export {
   // Tokeny projektów
   projectTokens,
   prPhotoTokens,
-  prDevTokens,
+  prDevTokens
 };
