@@ -1,3 +1,5 @@
+// src/types/tokens.ts
+
 export interface ColorTokens {
   primary: string;
   secondary: string;
@@ -93,10 +95,11 @@ export interface DesignTokens {
   [key: string]: any;
 }
 
+// Dodajemy typ dla kluczy projektów
+export type ProjectKey = 'prPhoto' | 'prDev';
+
 export interface DesignTokensWithProjects extends DesignTokens {
   projects: {
-    prPhoto: DesignTokens;
-    prDev: DesignTokens;
-    [key: string]: DesignTokens;
+    [key in ProjectKey]: DesignTokens;
   };
 }
