@@ -1,3 +1,4 @@
+
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
@@ -12,11 +13,13 @@ export default [
         file: 'dist/esm/index.js',
         format: 'esm',
         sourcemap: true,
+        exports: 'named'
       },
       {
         file: 'dist/cjs/index.js',
         format: 'cjs',
         sourcemap: true,
+        exports: 'named'
       },
     ],
     plugins: [
