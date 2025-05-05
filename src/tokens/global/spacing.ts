@@ -24,19 +24,3 @@ export const boxShadow: BoxShadow = {
   md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
 };
-
-// 5. Globalne tokeny (src/tokens/global/index.ts)
-import { colors } from './colors';
-import { typography } from './typography';
-import { spacing, borderRadius, boxShadow } from './spacing';
-import { DesignTokens } from '../../types/tokens';
-
-export const globalTokens: DesignTokens = {
-  colors,
-  typography,
-  spacing,
-  borderRadius,
-  boxShadow,
-};
-
-export { colors, typography, spacing, borderRadius, boxShadow };
