@@ -1,6 +1,6 @@
 {
   "name": "@przemekr95/quick-design-tokens",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Modern design tokens library with TypeScript support",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -13,12 +13,16 @@
       "types": "./dist/types/index.d.ts"
     },
     "./scss": {
-      "import": "./dist/scss/tokens.scss",
-      "require": "./dist/scss/tokens.scss"
+      "default": "./dist/scss/tokens.scss"
     },
-    "./scss/*": {
-      "import": "./dist/scss/*.scss",
-      "require": "./dist/scss/*.scss"
+    "./scss/tokens": {
+      "default": "./dist/scss/tokens.scss"
+    },
+    "./scss/prPhoto": {
+      "default": "./dist/scss/prPhoto.scss"
+    },
+    "./scss/prDev": {
+      "default": "./dist/scss/prDev.scss"
     }
   },
   "publishConfig": {
@@ -28,7 +32,7 @@
   "scripts": {
     "build:js": "rollup -c",
     "build:scss": "node scripts/generate-scss.js",
-    "build": "npm run build:js && npm run build:scss",
+    "build": "npm run clean && npm run build:js && npm run build:scss",
     "dev": "rollup -c -w",
     "clean": "rimraf dist",
     "lint": "eslint src --ext .ts",

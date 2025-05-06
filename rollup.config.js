@@ -27,6 +27,7 @@ export default [
       typescript({
         tsconfig: './tsconfig.json',
         declaration: false,
+        outDir: null, // Wyłącz outDir w typescript plugin, pozwól Rollup kontrolować wyjście
       }),
     ],
     external: ['lodash.merge'],
@@ -48,6 +49,7 @@ export default [
       typescript({
         tsconfig: './tsconfig.json',
         declaration: false,
+        outDir: null, // Wyłącz outDir w typescript plugin
       }),
     ],
     external: ['lodash.merge'],

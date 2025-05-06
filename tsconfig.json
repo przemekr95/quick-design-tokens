@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "declaration": true,
-    "outDir": "./dist",
+    // Usuwamy outDir, ponieważ będzie kontrolowany przez Rollup
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
