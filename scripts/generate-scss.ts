@@ -1,5 +1,7 @@
-import tokens from '../index';
-import { ProjectKey } from '../types/tokens';
+import fs from 'fs';
+import path from 'path';
+import tokens from '../src/index';
+import { ProjectKey } from '../src/types/tokens';
 
 /**
  * Transformuje obiekt tokenów do formatu map SCSS
@@ -9,10 +11,15 @@ import { ProjectKey } from '../types/tokens';
  * @returns Ciąg znaków reprezentujący mapę SCSS
  */
 export const transformTokensToSCSSMaps = (
-  obj: Record<string, any>, 
+  obj: Record<string, any> | null | undefined, 
   mapName: string, 
   depth: number = 0
 ): string => {
+  // Handle null or undefined objects
+  if (!obj || typeof obj !== 'object') {
+    return '()';
+  }
+
   const indent = '  '.repeat(depth);
   const entries: string[] = [];
 
@@ -38,7 +45,7 @@ export const generateSCSSVariables = (): string => {
   
   // Przetwarzanie globalnych tokenów
   for (const [key, value] of Object.entries(tokens.globalTokens)) {
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && value !== null) {
       scss += `$${key}: ${transformTokensToSCSSMaps(value, key)};\n\n`;
     }
   }
@@ -62,7 +69,7 @@ export const generateProjectSCSSVariables = (projectKey: string): string => {
   
   // Przetwarzanie tokenów projektu
   for (const [key, value] of Object.entries(projectSpecificTokens)) {
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && value !== null) {
       scss += `$${projectKey}-${key}: ${transformTokensToSCSSMaps(value, `${projectKey}-${key}`)};\n\n`;
     }
   }
@@ -78,3 +85,30 @@ export const generateProjectSCSSVariables = (projectKey: string): string => {
 function isValidProjectKey(key: string): key is ProjectKey {
   return key === 'prPhoto' || key === 'prDev';
 }
+
+// Główna funkcja do uruchomienia
+function main() {
+  // Utwórz katalog dla plików SCSS, jeśli nie istnieje
+  const scssDir = path.resolve('./dist/scss');
+  if (!fs.existsSync(scssDir)) {
+    fs.mkdirSync(scssDir, { recursive: true });
+  }
+  
+  // Generuj i zapisz główny plik SCSS z globalnymi tokenami
+  const mainScssContent = generateSCSSVariables();
+  fs.writeFileSync(path.join(scssDir, 'tokens.scss'), mainScssContent);
+  console.log('✓ Wygenerowano główny plik SCSS z globalnymi tokenami');
+  
+  // Generuj i zapisz pliki SCSS dla poszczególnych projektów
+  const projectKeys: ProjectKey[] = ['prPhoto', 'prDev'];
+  projectKeys.forEach(projectKey => {
+    const projectScssContent = generateProjectSCSSVariables(projectKey);
+    fs.writeFileSync(path.join(scssDir, `${projectKey}.scss`), projectScssContent);
+    console.log(`✓ Wygenerowano plik SCSS dla projektu ${projectKey}`);
+  });
+  
+  console.log('Zakończono generowanie plików SCSS!');
+}
+
+// Uruchom główną funkcję
+main();
