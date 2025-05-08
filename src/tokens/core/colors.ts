@@ -1,3 +1,4 @@
+// src/tokens/core/colors.ts
 import { ColorTokens } from '../../types/tokens';
 
 export const colors: ColorTokens = {

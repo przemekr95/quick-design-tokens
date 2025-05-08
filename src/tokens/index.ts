@@ -1,11 +1,14 @@
-import { globalTokens } from './global';
-import { projectTokens, prPhotoTokens, prDevTokens } from './projects';
-import { DesignTokensWithProjects } from '../types/tokens';
+import { coreTokens } from './core';
+import { themes } from './themes';
+import { Tokens } from '../types/tokens';
 
-// Eksportujemy zarówno globalne tokeny, jak i tokeny projektów
-export const tokens: DesignTokensWithProjects = {
-  ...globalTokens,
-  projects: projectTokens,
+// Główny obiekt tokenów
+export const tokens: Tokens = {
+  core: coreTokens,
+  themes,
 };
 
-export { globalTokens, projectTokens, prPhotoTokens, prDevTokens };
+// Eksport wszystkich potrzebnych elementów
+export { coreTokens, themes };
+export * from './core';
+export * from './themes';

@@ -1,5 +1,6 @@
 // src/types/tokens.ts
 
+// Podstawowe typy tokenów
 export interface ColorTokens {
   primary: string;
   secondary: string;
@@ -12,37 +13,31 @@ export interface ColorTokens {
   [key: string]: string;
 }
 
-export interface FontFamily {
-  base: string;
-  heading: string;
-  monospace: string;
-  [key: string]: string;
-}
-
-export interface FontSize {
-  xs: string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  '2xl': string;
-  '3xl': string;
-  [key: string]: string;
-}
-
-export interface FontWeight {
-  light: number;
-  regular: number;
-  medium: number;
-  semibold: number;
-  bold: number;
-  [key: string]: number;
-}
-
 export interface TypographyTokens {
-  fontFamily: FontFamily;
-  fontSize: FontSize;
-  fontWeight: FontWeight;
+  fontFamily: {
+    base: string;
+    heading: string;
+    monospace: string;
+    [key: string]: string;
+  };
+  fontSize: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+    '3xl': string;
+    [key: string]: string;
+  };
+  fontWeight: {
+    light: number;
+    regular: number;
+    medium: number;
+    semibold: number;
+    bold: number;
+    [key: string]: number;
+  };
   lineHeight: {
     tight: string;
     normal: string;
@@ -86,7 +81,8 @@ export interface BoxShadow {
   [key: string]: string;
 }
 
-export interface DesignTokens {
+// Główny typ tokenów
+export interface CoreTokens {
   colors: ColorTokens;
   typography: TypographyTokens;
   spacing: SpacingTokens;
@@ -95,11 +91,22 @@ export interface DesignTokens {
   [key: string]: any;
 }
 
-// Dodajemy typ dla kluczy projektów
-export type ProjectKey = 'prPhoto' | 'prDev';
+// Typ dla tematów - dziedziczy po CoreTokens
+export type ThemeTokens = CoreTokens;
 
-export interface DesignTokensWithProjects extends DesignTokens {
-  projects: {
-    [key in ProjectKey]: DesignTokens;
-  };
+// Klucze tematów
+export type ThemeKey = 'prPhoto' | 'prDev';
+
+// Mapa tematów
+export interface ThemeMap {
+  [key: string]: ThemeTokens;
 }
+
+// Główny typ eksportowy
+export interface Tokens {
+  core: CoreTokens;
+  themes: ThemeMap;
+}
+
+// Typ dla formatu wyjściowego
+export type OutputFormat = 'scss' | 'css' | 'js' | 'ts';
