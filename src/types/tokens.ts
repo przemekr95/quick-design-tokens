@@ -1,6 +1,3 @@
-// src/types/tokens.ts
-
-// Podstawowe typy tokenów
 export interface ColorTokens {
   primary: string;
   secondary: string;
@@ -81,8 +78,8 @@ export interface BoxShadow {
   [key: string]: string;
 }
 
-// Główny typ tokenów
-export interface CoreTokens {
+// Dodajemy typ DesignTokens, którego brakowało
+export interface DesignTokens {
   colors: ColorTokens;
   typography: TypographyTokens;
   spacing: SpacingTokens;
@@ -91,11 +88,16 @@ export interface CoreTokens {
   [key: string]: any;
 }
 
-// Typ dla tematów - dziedziczy po CoreTokens
-export type ThemeTokens = CoreTokens;
+// Główny typ tokenów
+export type CoreTokens = DesignTokens;
+
+// Typ dla tematów - dziedziczy po CoreTokens, ale może zawierać dodatkowe tokeny
+export interface ThemeTokens extends CoreTokens {
+  [key: string]: any; // Pozwala na dodawanie nowych tokenów w motywach, których nie ma w core
+}
 
 // Klucze tematów
-export type ThemeKey = 'prPhoto' | 'prDev';
+export type ThemeKey = 'pr-photo' | 'pr-dev';
 
 // Mapa tematów
 export interface ThemeMap {

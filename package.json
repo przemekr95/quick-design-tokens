@@ -18,11 +18,11 @@
     "./scss/core": {
       "default": "./dist/scss/core.scss"
     },
-    "./scss/prPhoto": {
-      "default": "./dist/scss/prPhoto.scss"
+    "./scss/pr-photo": {
+      "default": "./dist/scss/pr_photo.scss"
     },
-    "./scss/prDev": {
-      "default": "./dist/scss/prDev.scss"
+    "./scss/pr-dev": {
+      "default": "./dist/scss/pr_dev.scss"
     },
     "./css": {
       "default": "./dist/css/index.css"
@@ -30,11 +30,11 @@
     "./css/core": {
       "default": "./dist/css/core.css"
     },
-    "./css/prPhoto": {
-      "default": "./dist/css/prPhoto.css"
+    "./css/pr-photo": {
+      "default": "./dist/css/pr_photo.css"
     },
-    "./css/prDev": {
-      "default": "./dist/css/prDev.css"
+    "./css/pr-dev": {
+      "default": "./dist/css/pr_dev.css"
     }
   },
   "publishConfig": {

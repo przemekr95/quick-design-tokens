@@ -1,11 +1,11 @@
-import { prPhoto } from './prPhoto';
-import { prDev } from './prDev';
+import { prPhoto } from './pr-photo';
+import { prDev } from './pr-dev';
 import { ThemeMap } from '../../types/tokens';
 
 // Mapa wszystkich motywów
 export const themes: ThemeMap = {
-  prPhoto,
-  prDev,
+  'pr-photo': prPhoto, // Zmienione klucze zgodnie z konwencją nazewnictwa
+  'pr-dev': prDev,
 };
 
 // Eksport poszczególnych motywów

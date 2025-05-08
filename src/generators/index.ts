@@ -38,15 +38,18 @@ export const generateOutputFormats = (
   
   // Generowanie dla każdego motywu
   Object.entries(themes).forEach(([themeKey, themeTokens]) => {
+    // Normalizacja nazwy pliku (zastępowanie znaków '-' na '_' dla zgodności)
+    const safeThemeKey = themeKey.replace(/-/g, '_');
+    
     // SCSS dla motywu
     const themeScss = generateThemeScss(themeKey, themeTokens as ThemeTokens);
-    fs.writeFileSync(path.join(scssDir, `${themeKey}.scss`), themeScss);
-    scssIndex += `@import "./${themeKey}";\n`;
+    fs.writeFileSync(path.join(scssDir, `${safeThemeKey}.scss`), themeScss);
+    scssIndex += `@import "./${safeThemeKey}";\n`;
     
     // CSS dla motywu
     const themeCss = generateThemeCss(themeKey, themeTokens as ThemeTokens);
-    fs.writeFileSync(path.join(cssDir, `${themeKey}.css`), themeCss);
-    cssIndex += `@import "./${themeKey}.css";\n`;
+    fs.writeFileSync(path.join(cssDir, `${safeThemeKey}.css`), themeCss);
+    cssIndex += `@import "./${safeThemeKey}.css";\n`;
   });
   
   // Zapisz pliki indeksu

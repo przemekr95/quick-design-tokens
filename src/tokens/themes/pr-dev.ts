@@ -9,5 +9,14 @@ export const prDev: ThemeTokens = merge({}, coreTokens, {
     secondary: '#0066cc',
     accent: '#ff5500',
   },
-  // Można dodać inne nadpisane tokeny
+  // Dodatkowe tokeny specyficzne dla motywu, których nie ma w core
+  customFeatures: {
+    devMode: true,
+    codeHighlighting: {
+      background: '#f5f5f5',
+      text: '#333333',
+      keyword: '#0000ff',
+      comment: '#008000'
+    }
+  }
 });

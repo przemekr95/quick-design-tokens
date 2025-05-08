@@ -1,12 +1,15 @@
-import { tokens, globalTokens, projectTokens } from './tokens';
-import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/global';
-import { prPhotoTokens, prDevTokens } from './tokens/projects/index';
+import { tokens, globalTokens, projectTokens, coreTokens } from './tokens';
+import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/core';
+import { prPhoto, prDev } from './tokens/themes';
 
 // Eksport domyślny - pełen zestaw tokenów
 export default tokens;
 
 // Eksport nazwany - poszczególne elementy
 export {
+  // Tokeny rdzeniowe
+  coreTokens,
+  
   // Globalne tokeny
   globalTokens,
   colors,
@@ -17,6 +20,6 @@ export {
   
   // Tokeny projektów
   projectTokens,
-  prPhotoTokens,
-  prDevTokens
+  prPhoto,
+  prDev
 };

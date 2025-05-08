@@ -9,5 +9,14 @@ export const prPhoto: ThemeTokens = merge({}, coreTokens, {
     secondary: '#ff9900',
     accent: '#ff5500',
   },
-  // Można dodać inne nadpisane tokeny
+  // Dodatkowe tokeny specyficzne dla motywu, których nie ma w core
+  photoFilters: {
+    sepia: 'sepia(0.4)',
+    grayscale: 'grayscale(0.5)',
+    vibrance: {
+      low: 'saturate(1.2)',
+      medium: 'saturate(1.5)',
+      high: 'saturate(1.8)'
+    }
+  }
 });
