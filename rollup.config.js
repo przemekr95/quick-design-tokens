@@ -14,6 +14,7 @@ export default [
         sourcemap: true,
         preserveModules: true,
         preserveModulesRoot: 'src',
+        exports: 'named',
       },
       {
         dir: 'dist/js/cjs',
@@ -21,6 +22,7 @@ export default [
         sourcemap: true,
         preserveModules: true,
         preserveModulesRoot: 'src',
+        exports: 'named',
       },
     ],
     plugins: [
