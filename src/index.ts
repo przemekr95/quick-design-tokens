@@ -1,6 +1,6 @@
-import { tokens, globalTokens, projectTokens, coreTokens } from './tokens';
-import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/core';
-import { prPhoto, prDev } from './tokens/themes';
+import { tokens, globalTokens, projectTokens, coreTokens } from './tokens/index.js';
+import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/core/index.js';
+import { prPhoto, prDev } from './tokens/themes/index.js';
 
 // Eksport domyślny - pełen zestaw tokenów
 export default tokens;

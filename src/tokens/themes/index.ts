@@ -1,6 +1,6 @@
-import { prPhoto } from './pr-photo';
-import { prDev } from './pr-dev';
-import { ThemeMap } from '../../types/tokens';
+import { prPhoto } from './pr-photo.js';
+import { prDev } from './pr-dev.js';
+import { ThemeMap } from '../../types/tokens.js';
 
 // Mapa wszystkich motywów
 export const themes: ThemeMap = {

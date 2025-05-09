@@ -1,7 +1,7 @@
-import { colors } from './colors';
-import { typography } from './typography';
-import { spacing, borderRadius, boxShadow } from './spacing';
-import { DesignTokens, CoreTokens } from '../../types/tokens';
+import { colors } from './colors.js';
+import { typography } from './typography.js';
+import { spacing, borderRadius, boxShadow } from './spacing.js';
+import { DesignTokens, CoreTokens } from '../../types/tokens.js';
 
 // Tworzymy obiekt globalnych tokenów
 export const globalTokens: DesignTokens = {

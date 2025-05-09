@@ -1,5 +1,5 @@
-import { ThemeTokens } from '../../types/tokens';
-import { coreTokens } from '../core';
+import { ThemeTokens } from '../../types/tokens.js';
+import { coreTokens } from '../core/index.js';
 import merge from 'lodash.merge';
 
 // Definicja tokenów dla jednego motywu w pojedynczym pliku

@@ -1,9 +1,9 @@
 // src/generators/index.ts
 import fs from 'fs';
 import path from 'path';
-import { CoreTokens, ThemeMap, ThemeTokens } from '../types/tokens';
-import { generateCoreScss, generateThemeScss } from './scss';
-import { generateCoreCss, generateThemeCss } from './css';
+import { CoreTokens, ThemeMap, ThemeTokens } from '../types/tokens.js';
+import { generateCoreScss, generateThemeScss } from './scss.js';
+import { generateCoreCss, generateThemeCss } from './css.js';
 
 /**
  * Generuje wszystkie formaty wyjściowe

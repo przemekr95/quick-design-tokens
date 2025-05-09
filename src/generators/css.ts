@@ -1,5 +1,5 @@
 // src/generators/css.ts
-import { CoreTokens, ThemeTokens } from '../types/tokens';
+import { CoreTokens, ThemeTokens } from '../types/tokens.js';
 
 /**
  * Transformuje tokeny do zmiennych CSS

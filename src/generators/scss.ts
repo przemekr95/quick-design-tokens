@@ -1,4 +1,4 @@
-import { CoreTokens, ThemeTokens } from '../types/tokens';
+import { CoreTokens, ThemeTokens } from '../types/tokens.js';
 
 /**
  * Transformuje obiekt tokenów do formatu map SCSS

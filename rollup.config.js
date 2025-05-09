@@ -23,6 +23,7 @@ export default [
         preserveModules: true,
         preserveModulesRoot: 'src',
         exports: 'named',
+        entryFileNames: '[name].js',
       },
     ],
     plugins: [
@@ -34,7 +35,7 @@ export default [
         outDir: null,
       }),
     ],
-    external: ['lodash.merge'],
+    external: ['lodash.merge', 'path', 'url', 'fs'],
   },
 
   // Bundle dla typów TypeScript
