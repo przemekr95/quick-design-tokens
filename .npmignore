@@ -1,0 +1,25 @@
+# Pliki źródłowe
+src/
+scripts/
+
+# Pliki konfiguracyjne
+.eslintrc*
+tsconfig*
+rollup.config.js
+.gitignore
+
+# Testy
+__tests__/
+test/
+tests/
+*.spec.*
+*.test.*
+
+# IDE
+.vscode/
+.idea/
+
+# Inne
+.github/
+*.log
+coverage/

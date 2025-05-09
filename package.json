@@ -45,8 +45,9 @@
     "build": "npm run clean && rollup -c && node --loader ts-node/esm scripts/build-formats.ts",
     "dev": "rollup -c -w",
     "clean": "rimraf dist",
-    "lint": "eslint . --ext .js,.ts",
-    "prepublishOnly": "npm run lint && npm run build"
+    "lint": "eslint src/**/*.{js,ts} --ext .js,.ts",
+    "prepublishOnly": "npm run build",
+    "publish:npm": "npm run lint && npm publish"
   },
   "files": [
     "dist"

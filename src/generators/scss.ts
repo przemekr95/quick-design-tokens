@@ -6,7 +6,7 @@ import { CoreTokens, ThemeTokens } from '../types/tokens.js';
 export const transformToScssMaps = (
   obj: Record<string, any>,
   mapName: string,
-  depth: number = 0
+  depth = 0 // Usunięto explicit typ, który powodował błąd
 ): string => {
   if (!obj || typeof obj !== 'object') {
     return '()';
