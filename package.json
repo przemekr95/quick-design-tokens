@@ -1,19 +1,87 @@
 {
   "name": "@przemekr95/quick-design-tokens",
-  "version": "0.1.1",
-  "description": "Design tokens for my project",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "0.2.2",
+  "description": "Modern design tokens library with TypeScript support",
   "type": "module",
+  "main": "dist/js/cjs/index.js",
+  "module": "dist/js/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/js/esm/index.js",
+      "require": "./dist/js/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./scss": {
+      "default": "./dist/scss/index.scss"
+    },
+    "./scss/core": {
+      "default": "./dist/scss/core.scss"
+    },
+    "./scss/pr-photo": {
+      "default": "./dist/scss/pr_photo.scss"
+    },
+    "./scss/pr-dev": {
+      "default": "./dist/scss/pr_dev.scss"
+    },
+    "./css": {
+      "default": "./dist/css/index.css"
+    },
+    "./css/core": {
+      "default": "./dist/css/core.css"
+    },
+    "./css/pr-photo": {
+      "default": "./dist/css/pr_photo.css"
+    },
+    "./css/pr-dev": {
+      "default": "./dist/css/pr_dev.css"
+    }
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
+  "sideEffects": false,
   "scripts": {
-    "build": "node config/style-dictionary.config.mjs && tsc",
-    "prepare": "npm run build"
+    "build": "npm run clean && rollup -c && node --loader ts-node/esm scripts/build-formats.ts",
+    "dev": "rollup -c -w",
+    "clean": "rimraf dist",
+    "lint": "eslint src/**/*.{js,ts} --ext .js,.ts",
+    "prepublishOnly": "npm run build",
+    "publish:npm": "npm run lint && npm publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "css",
+    "typescript",
+    "react",
+    "scss",
+    "sass"
+  ],
+  "author": "przemekr95",
+  "license": "MIT",
+  "dependencies": {
+    "lodash.merge": "^4.6.2"
   },
   "devDependencies": {
-    "style-dictionary": "^4.4.0",
-    "typescript": "^5.8.3"
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@types/lodash.merge": "^4.6.7",
+    "@types/node": "^18.19.99",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "eslint": "^8.16.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.1.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.5",
+    "rollup-plugin-dts": "^4.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5",
+    "typescript-eslint": "^8.32.0"
   }
 }
