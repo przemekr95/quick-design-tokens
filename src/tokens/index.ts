@@ -1,5 +1,5 @@
 import { coreTokens, globalTokens } from './core/index.js';
-import { themes, prPhoto, prDev } from './themes/index.js';
+import { themes, prPhoto, prDev, prIskierka } from './themes/index.js';
 import { Tokens } from '../types/tokens.js';
 
 export const tokens: Tokens = {
@@ -13,5 +13,6 @@ export * from './themes/index.js';
 
 export const projectTokens = {
   'pr-photo': prPhoto,
-  'pr-dev': prDev
+  'pr-dev': prDev,
+  'pr-iskierka': prIskierka
 };

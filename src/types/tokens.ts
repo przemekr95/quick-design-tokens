@@ -93,7 +93,7 @@ export interface ThemeTokens extends CoreTokens {
   [key: string]: any;
 }
 
-export type ThemeKey = 'pr-photo' | 'pr-dev';
+export type ThemeKey = 'pr-photo' | 'pr-dev' | 'pr-iskierka';
 
 export interface ThemeMap {
   [key: string]: ThemeTokens;
