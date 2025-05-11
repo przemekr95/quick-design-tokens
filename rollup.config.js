@@ -4,7 +4,6 @@ import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 
 export default [
-  // ESM i CJS bundle
   {
     input: 'src/index.ts',
     output: [
@@ -37,8 +36,6 @@ export default [
     ],
     external: ['lodash.merge', 'path', 'url', 'fs'],
   },
-
-  // Bundle dla typów TypeScript
   {
     input: 'src/index.ts',
     output: {

@@ -18,12 +18,12 @@ module.exports = {
   },
   settings: {
     react: {
-      version: 'detect', // Automatycznie wykryj wersję React
+      version: 'detect',
     },
   },
   rules: {
-    '@typescript-eslint/no-explicit-any': 'off', // Wyłączenie ostrzeżeń o użyciu 'any'
-    '@typescript-eslint/no-inferrable-types': 'off', // Wyłączenie ostrzeżeń o oczywistych typach
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
   },
-  ignorePatterns: ['dist/**/*', 'node_modules/**/*'], // Ignoruj pliki w folderze dist i node_modules
+  ignorePatterns: ['dist/**/*', 'node_modules/**/*'],
 };

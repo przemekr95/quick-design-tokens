@@ -78,7 +78,6 @@ export interface BoxShadow {
   [key: string]: string;
 }
 
-// Dodajemy typ DesignTokens, którego brakowało
 export interface DesignTokens {
   colors: ColorTokens;
   typography: TypographyTokens;
@@ -88,27 +87,21 @@ export interface DesignTokens {
   [key: string]: any;
 }
 
-// Główny typ tokenów
 export type CoreTokens = DesignTokens;
 
-// Typ dla tematów - dziedziczy po CoreTokens, ale może zawierać dodatkowe tokeny
 export interface ThemeTokens extends CoreTokens {
-  [key: string]: any; // Pozwala na dodawanie nowych tokenów w motywach, których nie ma w core
+  [key: string]: any;
 }
 
-// Klucze tematów
 export type ThemeKey = 'pr-photo' | 'pr-dev';
 
-// Mapa tematów
 export interface ThemeMap {
   [key: string]: ThemeTokens;
 }
 
-// Główny typ eksportowy
 export interface Tokens {
   core: CoreTokens;
   themes: ThemeMap;
 }
 
-// Typ dla formatu wyjściowego
 export type OutputFormat = 'scss' | 'css' | 'js' | 'ts';

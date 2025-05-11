@@ -2,15 +2,12 @@ node_modules
 .npmrc
 package-lock.json
 
-# Katalogi generowane
 /dist
 /build
 /coverage
 
-# Zależności
 /node_modules
 
-# Pliki środowiskowe
 .env
 .env.local
 .env.development.local
@@ -18,7 +15,6 @@ package-lock.json
 .env.production.local
 .env*.local
 
-# Pliki logów
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -26,12 +22,10 @@ pnpm-debug.log*
 logs
 *.log
 
-# Pliki systemowe
 .DS_Store
 Thumbs.db
 .directory
 
-# Pliki edytorów
 /.idea
 /.vscode
 *.swp
@@ -42,14 +36,12 @@ Thumbs.db
 .classpath
 *.sublime-*
 
-# Cache
 .npm
 .eslintcache
 .stylelintcache
 .rollup.cache
 .parcel-cache
 
-# Pliki tymczasowe
 temp
 tmp
 *.tmp

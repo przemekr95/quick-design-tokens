@@ -1,12 +1,19 @@
 import { CoreTokens, ThemeTokens } from '../types/tokens.js';
 
-/**
- * Transformuje obiekt tokenów do formatu map SCSS
- */
+const isColorValue = (value: string): boolean => {
+  return typeof value === 'string' && (
+    /^#([0-9A-F]{3}){1,2}$/i.test(value) ||
+    /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i.test(value) ||
+    /^rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)$/i.test(value) ||
+    /^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/i.test(value) ||
+    /^hsla\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*,\s*[\d.]+\s*\)$/i.test(value)
+  );
+};
+
 export const transformToScssMaps = (
   obj: Record<string, any>,
   mapName: string,
-  depth = 0 // Usunięto explicit typ, który powodował błąd
+  depth = 0
 ): string => {
   if (!obj || typeof obj !== 'object') {
     return '()';
@@ -18,6 +25,8 @@ export const transformToScssMaps = (
   for (const [key, value] of Object.entries(obj)) {
     if (typeof value === 'object' && value !== null) {
       entries.push(`  "${key}": ${transformToScssMaps(value, `${mapName}-${key}`, depth + 1)}`);
+    } else if (typeof value === 'string' && isColorValue(value)) {
+      entries.push(`  "${key}": ${value}`);
     } else {
       entries.push(`  "${key}": ${JSON.stringify(value)}`);
     }
@@ -26,11 +35,8 @@ export const transformToScssMaps = (
   return `(\n${indent}${entries.join(',\n' + indent)}\n${indent})`;
 };
 
-/**
- * Generuje zmienne SCSS dla tokenów rdzenia
- */
 export const generateCoreScss = (coreTokens: CoreTokens): string => {
-  let scss = '// Auto-generowane zmienne SCSS z tokenów rdzeniowych\n\n';
+  let scss = '// Auto-generated index of SCSS files\n\n';
   
   for (const [key, value] of Object.entries(coreTokens)) {
     if (typeof value === 'object' && value !== null) {
@@ -41,15 +47,12 @@ export const generateCoreScss = (coreTokens: CoreTokens): string => {
   return scss;
 };
 
-/**
- * Generuje zmienne SCSS dla motywu
- */
 export const generateThemeScss = (
   themeKey: string, 
   themeTokens: ThemeTokens
 ): string => {
-  let scss = `// Auto-generowane zmienne SCSS dla motywu ${themeKey}\n\n`;
-  scss += '// Importuj rdzeniowe tokeny\n';
+  let scss = `// Auto-generated index of SCSS files ${themeKey}\n\n`;
+  scss += '// Import core tokens\n';
   scss += '@import "./core";\n\n';
   
   for (const [key, value] of Object.entries(themeTokens)) {

@@ -1,9 +1,5 @@
-// src/generators/css.ts
 import { CoreTokens, ThemeTokens } from '../types/tokens.js';
 
-/**
- * Transformuje tokeny do zmiennych CSS
- */
 export const transformToCssVars = (
   obj: Record<string, any>, 
   prefix = ''
@@ -21,16 +17,10 @@ export const transformToCssVars = (
   return cssVars;
 };
 
-/**
- * Generuje zmienne CSS dla tokenów rdzenia
- */
 export const generateCoreCss = (coreTokens: CoreTokens): string => {
   return `:root {\n${transformToCssVars(coreTokens)}}\n`;
 };
 
-/**
- * Generuje zmienne CSS dla motywu
- */
 export const generateThemeCss = (
   themeKey: string, 
   themeTokens: ThemeTokens
