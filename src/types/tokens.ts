@@ -61,29 +61,10 @@ export interface SpacingTokens {
   [key: string]: string;
 }
 
-export interface BorderRadius {
-  none: string;
-  sm: string;
-  md: string;
-  lg: string;
-  full: string;
-  [key: string]: string;
-}
-
-export interface BoxShadow {
-  none: string;
-  sm: string;
-  md: string;
-  lg: string;
-  [key: string]: string;
-}
-
 export interface DesignTokens {
   colors: ColorTokens;
   typography: TypographyTokens;
   spacing: SpacingTokens;
-  borderRadius: BorderRadius;
-  boxShadow: BoxShadow;
   [key: string]: any;
 }
 

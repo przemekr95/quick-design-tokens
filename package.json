@@ -1,6 +1,6 @@
 {
   "name": "@przemekr95/quick-design-tokens",
-  "version": "0.3",
+  "version": "0.4.0",
   "description": "Modern design tokens library with TypeScript support",
   "type": "module",
   "main": "dist/js/cjs/index.js",

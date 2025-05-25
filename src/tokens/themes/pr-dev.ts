@@ -7,14 +7,5 @@ export const prDev: ThemeTokens = merge({}, coreTokens, {
     primary: '#ff9900',
     secondary: '#0066cc',
     accent: '#ff5500',
-  },
-  customFeatures: {
-    devMode: true,
-    codeHighlighting: {
-      background: '#f5f5f5',
-      text: '#333333',
-      keyword: '#0000ff',
-      comment: '#008000'
-    }
   }
 });

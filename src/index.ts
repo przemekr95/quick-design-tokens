@@ -1,5 +1,5 @@
 import { tokens, globalTokens, projectTokens, coreTokens } from './tokens/index.js';
-import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/core/index.js';
+import { colors, typography, spacing } from './tokens/core/index.js';
 import { prPhoto, prDev, prIskierka } from './tokens/themes/index.js';
 
 export default tokens;
@@ -12,8 +12,6 @@ export {
   colors,
   typography,
   spacing,
-  borderRadius,
-  boxShadow,
   // Project tokens
   projectTokens,
   prPhoto,

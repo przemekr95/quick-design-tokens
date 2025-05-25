@@ -1,8 +1,9 @@
 import { ColorTokens } from '../../types/tokens';
 
 export const colors: ColorTokens = {
-  primary: '#007bff',
-  secondary: '#6c757d',
+  primary: '#3563e9',
+  secondary: '#5e6ad2',
+  tertiary: '#14b8a6',
   success: '#28a745',
   danger: '#dc3545',
   warning: '#ffc107',
