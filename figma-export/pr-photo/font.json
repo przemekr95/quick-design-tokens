@@ -1,0 +1,62 @@
+{
+  "font": {
+    "artistic": {
+      "serif": {
+        "value": "'Playfair Display', Georgia, 'Times New Roman', serif",
+        "type": "fontFamily"
+      },
+      "script": {
+        "value": "'Dancing Script', cursive",
+        "type": "fontFamily"
+      },
+      "modern": {
+        "value": "'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif",
+        "type": "fontFamily"
+      }
+    },
+    "caption": {
+      "size": {
+        "small": {
+          "value": "0.75rem",
+          "type": "fontSize"
+        },
+        "medium": {
+          "value": "0.875rem",
+          "type": "fontSize"
+        },
+        "large": {
+          "value": "1rem",
+          "type": "fontSize"
+        }
+      },
+      "weight": {
+        "light": {
+          "value": "300",
+          "type": "fontWeight"
+        },
+        "regular": {
+          "value": "400",
+          "type": "fontWeight"
+        },
+        "bold": {
+          "value": "600",
+          "type": "fontWeight"
+        }
+      }
+    },
+    "watermark": {
+      "family": {
+        "value": "'Inter', sans-serif",
+        "type": "fontFamily"
+      },
+      "size": {
+        "value": "0.625rem",
+        "type": "fontSize"
+      },
+      "weight": {
+        "value": "500",
+        "type": "fontWeight"
+      }
+    }
+  }
+}

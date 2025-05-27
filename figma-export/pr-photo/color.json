@@ -1,0 +1,48 @@
+{
+  "color": {
+    "creative": {
+      "warm": {
+        "value": "#f97316",
+        "type": "color"
+      },
+      "cool": {
+        "value": "#0891b2",
+        "type": "color"
+      },
+      "vibrant": {
+        "value": "#ec4899",
+        "type": "color"
+      }
+    },
+    "photo": {
+      "overlay": {
+        "dark": {
+          "value": "rgba(0, 0, 0, 0.6)",
+          "type": "color"
+        },
+        "light": {
+          "value": "rgba(255, 255, 255, 0.8)",
+          "type": "color"
+        },
+        "gradient": {
+          "value": "linear-gradient(135deg, rgba(236, 72, 153, 0.8) 0%, rgba(8, 145, 178, 0.8) 100%)",
+          "type": "color"
+        }
+      },
+      "filter": {
+        "sepia": {
+          "value": "#d2b48c",
+          "type": "color"
+        },
+        "vintage": {
+          "value": "#8b7355",
+          "type": "color"
+        },
+        "modern": {
+          "value": "#64748b",
+          "type": "color"
+        }
+      }
+    }
+  }
+}
