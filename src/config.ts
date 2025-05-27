@@ -1,4 +1,4 @@
-import StyleDictionary from 'style-dictionary';
+import StyleDictionary, { Dictionary } from 'style-dictionary';
 
 // TODO: Dodaj konfigurację dla formatów CJS/ESM:
 // - Dodaj format 'javascript/es6' dla ESM
@@ -90,20 +90,20 @@ export const configs = {
 // Custom formaty - można rozszerzyć w przyszłości
 StyleDictionary.registerFormat({
   name: 'scss/variables-with-map',
-  formatter: function({ dictionary, options }) {
+  format: function({ dictionary, options }: { dictionary: Dictionary; options?: any }) {
     const header = options?.showFileHeader ? 
       `// ${options.fileHeader || 'Design tokens'}\n// Generated automatically - do not edit\n\n` : '';
     
     let output = header;
     
     // Generuj zmienne SCSS
-    dictionary.allTokens.forEach(token => {
+    dictionary.allTokens.forEach((token: any) => {
       output += `$${token.name}: ${token.value};\n`;
     });
     
     output += '\n// Token map for programmatic access\n';
     output += '$tokens: (\n';
-    dictionary.allTokens.forEach(token => {
+    dictionary.allTokens.forEach((token: any) => {
       output += `  '${token.name}': ${token.value},\n`;
     });
     output += ');\n';
