@@ -1,48 +1,36 @@
 {
   "color": {
-    "brand": {
-      "primary": {
-        "value": "#6366f1",
-        "type": "color"
-      },
-      "secondary": {
-        "value": "#8b5cf6",
-        "type": "color"
-      },
-      "accent": {
-        "value": "#06b6d4",
-        "type": "color"
-      }
+    "primary": {
+      "value": "#2563eb",
+      "type": "color"
     },
-    "developer": {
-      "syntax": {
-        "keyword": {
-          "value": "#c586c0",
-          "type": "color"
-        },
-        "string": {
-          "value": "#ce9178",
-          "type": "color"
-        },
-        "comment": {
-          "value": "#6a9955",
-          "type": "color"
-        }
-      },
-      "terminal": {
-        "background": {
-          "value": "#1e1e1e",
-          "type": "color"
-        },
-        "text": {
-          "value": "#d4d4d4",
-          "type": "color"
-        },
-        "success": {
-          "value": "#4ec9b0",
-          "type": "color"
-        }
-      }
+    "secondary": {
+      "value": "#1d4ed8",
+      "type": "color"
+    },
+    "neutral": {
+      "value": "#525252",
+      "type": "color"
+    },
+    "background": {
+      "value": "#e5e7eb",
+      "type": "color"
+    },
+    "text": {
+      "value": "#0f172a",
+      "type": "color"
+    },
+    "success": {
+      "value": "#059669",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#d97706",
+      "type": "color"
+    },
+    "error": {
+      "value": "#dc2626",
+      "type": "color"
     }
   }
 }

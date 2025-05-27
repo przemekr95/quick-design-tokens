@@ -14,36 +14,6 @@
         "type": "fontFamily"
       }
     },
-    "size": {
-      "xs": {
-        "value": "0.75rem",
-        "type": "fontSize"
-      },
-      "sm": {
-        "value": "0.875rem",
-        "type": "fontSize"
-      },
-      "base": {
-        "value": "1rem",
-        "type": "fontSize"
-      },
-      "lg": {
-        "value": "1.125rem",
-        "type": "fontSize"
-      },
-      "xl": {
-        "value": "1.25rem",
-        "type": "fontSize"
-      },
-      "2xl": {
-        "value": "1.5rem",
-        "type": "fontSize"
-      },
-      "3xl": {
-        "value": "1.875rem",
-        "type": "fontSize"
-      }
-    },
     "weight": {
       "light": {
         "value": "300",
@@ -64,6 +34,78 @@
       "bold": {
         "value": "700",
         "type": "fontWeight"
+      }
+    },
+    "size": {
+      "xs": {
+        "fontSize": {
+          "value": "12px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "16px",
+          "type": "lineHeight"
+        }
+      },
+      "sm": {
+        "fontSize": {
+          "value": "14px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "20px",
+          "type": "lineHeight"
+        }
+      },
+      "md": {
+        "fontSize": {
+          "value": "16px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "24px",
+          "type": "lineHeight"
+        }
+      },
+      "lg": {
+        "fontSize": {
+          "value": "18px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "28px",
+          "type": "lineHeight"
+        }
+      },
+      "xl": {
+        "fontSize": {
+          "value": "20px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "28px",
+          "type": "lineHeight"
+        }
+      },
+      "2xl": {
+        "fontSize": {
+          "value": "24px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "32px",
+          "type": "lineHeight"
+        }
+      },
+      "3xl": {
+        "fontSize": {
+          "value": "30px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "36px",
+          "type": "lineHeight"
+        }
       }
     }
   }
