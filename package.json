@@ -34,18 +34,18 @@
   "author": "przemekr95",
   "license": "MIT",
   "dependencies": {
-    "style-dictionary": "^4.0.1"
+    "style-dictionary": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
     "fs-extra": "^11.0.0",
     "@types/fs-extra": "^11.0.0",
-    "glob": "^10.0.0",
+    "glob": "^11.0.0",
     "@types/glob": "^8.0.0",
-    "rimraf": "^5.0.0",
+    "rimraf": "^6.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   }

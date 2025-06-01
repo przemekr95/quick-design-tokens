@@ -117,12 +117,10 @@ function processTokenGroup(tokenGroup: TokenGroup, category: string, parentPath:
 function processToken(token: Token, path: string[], category: string): Token {
   const processed: Token = { ...token };
   
-  // Dodaj metadata
-  processed.path = path;
-  processed.category = category;
-  
-  // Generuj nazwę CSS custom property
-  processed.name = path.join('-');
+  // Dodaj metadata - ale tylko jeśli nie kolidują z Style Dictionary
+  if (!processed.name) {
+    processed.name = path.join('-');
+  }
   
   // Dodaj opis jeśli nie istnieje
   if (!processed.description) {
@@ -134,7 +132,7 @@ function processToken(token: Token, path: string[], category: string): Token {
     processed.value = normalizeColorValue(processed.value);
   }
   
-  // Normalizuj wartości czcionek
+  // Normalizuj wartości czcionek - obsługuj zagnieżdżone struktury
   if (category === 'font') {
     processed.value = normalizeFontValue(processed.value, path);
   }
@@ -163,7 +161,19 @@ function normalizeColorValue(value: string): string {
  * Normalizuje wartości czcionek
  */
 function normalizeFontValue(value: string | number, path: string[]): string | number {
+  if (path.length === 0) return value;
+  
   const lastPathSegment = path[path.length - 1];
+  
+  // Obsługa zagnieżdżonych struktur fontów (fontSize, lineHeight)
+  if (lastPathSegment === 'fontSize' || lastPathSegment === 'lineHeight') {
+    if (typeof value === 'string' && value.includes('px')) {
+      return value; // Zachowaj px jeśli już są
+    }
+    if (typeof value === 'number') {
+      return `${value}px`; // Dodaj px dla liczb
+    }
+  }
   
   // Dodaj jednostki do rozmiarów czcionek jeśli brakuje
   if (lastPathSegment === 'size' && typeof value === 'number') {
@@ -172,8 +182,8 @@ function normalizeFontValue(value: string | number, path: string[]): string | nu
   
   // Normalizuj rodziny czcionek
   if (lastPathSegment === 'family' && typeof value === 'string') {
-    // Upewnij się, że nazwy z spacjami są w cudzysłowach
-    return value.replace(/([^,\s]+\s+[^,\s]+)/g, "'$1'");
+    // Upewnij się, że nazwy z spacjami są w cudzysłowach tylko jeśli potrzeba
+    return value.replace(/([^,\s'"]+\s+[^,\s'"]+)/g, "'$1'");
   }
   
   return value;

@@ -18,7 +18,7 @@ interface ProjectConfig {
         format: string;
         options?: {
           showFileHeader?: boolean;
-          fileHeader?: string;
+          fileHeader?: (fileHeader: { file: { destination: string }; [key: string]: any }) => string[];
         };
       }>;
     };
@@ -30,7 +30,7 @@ interface ProjectConfig {
         format: string;
         options?: {
           showFileHeader?: boolean;
-          fileHeader?: string;
+          fileHeader?: (fileHeader: { file: { destination: string }; [key: string]: any }) => string[];
         };
       }>;
     };
@@ -50,7 +50,11 @@ const createProjectConfig = (projectName: string, sources: string[]): ProjectCon
           format: 'scss/variables',
           options: {
             showFileHeader: true,
-            fileHeader: `Design tokens for ${projectName} project`
+            fileHeader: () => [
+              `Design tokens for ${projectName} project`,
+              'Generated automatically - do not edit directly',
+              `Built on: ${new Date().toISOString()}`
+            ]
           }
         }
       ]
@@ -64,7 +68,11 @@ const createProjectConfig = (projectName: string, sources: string[]): ProjectCon
           format: 'css/variables',
           options: {
             showFileHeader: true,
-            fileHeader: `Design tokens for ${projectName} project`
+            fileHeader: () => [
+              `Design tokens for ${projectName} project`,
+              'Generated automatically - do not edit directly',
+              `Built on: ${new Date().toISOString()}`
+            ]
           }
         }
       ]
@@ -90,9 +98,9 @@ export const configs = {
 // Custom formaty - można rozszerzyć w przyszłości
 StyleDictionary.registerFormat({
   name: 'scss/variables-with-map',
-  format: function({ dictionary, options }: { dictionary: Dictionary; options?: any }) {
-    const header = options?.showFileHeader ? 
-      `// ${options.fileHeader || 'Design tokens'}\n// Generated automatically - do not edit\n\n` : '';
+  format: function({ dictionary, options, file }: { dictionary: Dictionary; options?: any; file?: any }) {
+    const header = options?.showFileHeader && options?.fileHeader ? 
+      options.fileHeader({ file }).map((line: string) => `// ${line}`).join('\n') + '\n\n' : '';
     
     let output = header;
     
