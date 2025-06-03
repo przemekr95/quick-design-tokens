@@ -114,12 +114,27 @@ export const configs = {
   ])
 };
 
+// Helper function to safely get file header
+function getFileHeader(options: any): string {
+  if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
+    return options.fileHeader().map((line: string) => `// ${line}`).join('\n') + '\n\n';
+  }
+  return '';
+}
+
+// Helper function to safely get CSS file header
+function getCssFileHeader(options: any): string {
+  if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
+    return options.fileHeader().map((line: string) => `/* ${line} */`).join('\n') + '\n\n';
+  }
+  return '';
+}
+
 // Custom format dla klas SCSS z fontami
 StyleDictionary.registerFormat({
   name: 'scss/font-classes',
   format: function({ dictionary, options }): string {
-    const header = options?.showFileHeader && options?.fileHeader ? 
-      options.fileHeader().map((line: string) => `// ${line}`).join('\n') + '\n\n' : '';
+    const header = getFileHeader(options);
     
     let output = header;
     
@@ -156,8 +171,7 @@ StyleDictionary.registerFormat({
 StyleDictionary.registerFormat({
   name: 'css/font-classes',
   format: function({ dictionary, options }): string {
-    const header = options?.showFileHeader && options?.fileHeader ? 
-      options.fileHeader().map((line: string) => `/* ${line} */`).join('\n') + '\n\n' : '';
+    const header = getCssFileHeader(options);
     
     let output = header;
     
@@ -194,8 +208,7 @@ StyleDictionary.registerFormat({
 StyleDictionary.registerFormat({
   name: 'scss/variables-with-map',
   format: function({ dictionary, options }): string {
-    const header = options?.showFileHeader && options?.fileHeader ? 
-      options.fileHeader().map((line: string) => `// ${line}`).join('\n') + '\n\n' : '';
+    const header = getFileHeader(options);
     
     let output = header;
     
