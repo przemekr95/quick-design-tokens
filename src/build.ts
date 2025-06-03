@@ -75,21 +75,49 @@ async function generateIndexFiles(): Promise<void> {
   // TODO: Dodaj generowanie index.js, index.d.ts dla głównego eksportu
   // Obecnie skupiamy się na SCSS/CSS
   
-  // Generuj index.scss dla każdego projektu
+  // Generuj index.scss dla każdego projektu (z variables i classes)
   for (const projectName of Object.keys(configs)) {
     const scssIndexPath = `dist/scss/${projectName}/index.scss`;
-    const scssContent = `// ${projectName} design tokens\n@import './variables';\n`;
+    const scssContent = `// ${projectName} design tokens\n@import './variables';\n@import './classes';\n`;
     
     await fs.ensureDir(path.dirname(scssIndexPath));
     await fs.writeFile(scssIndexPath, scssContent);
   }
   
-  // Generuj główny index.scss
-  const mainScssContent = Object.keys(configs)
+  // Generuj główny index.scss (z variables i classes)
+  const mainScssVariables = Object.keys(configs)
     .map(project => `@import './${project}/variables';`)
     .join('\n');
   
-  await fs.writeFile('dist/scss/index.scss', `// All design tokens\n${mainScssContent}\n`);
+  const mainScssClasses = Object.keys(configs)
+    .map(project => `@import './${project}/classes';`)
+    .join('\n');
+  
+  const mainScssContent = `// All design tokens\n${mainScssVariables}\n\n// All utility classes\n${mainScssClasses}\n`;
+  
+  await fs.writeFile('dist/scss/index.scss', mainScssContent);
+
+  // Generuj index.css dla CSS (tylko variables, classes są już w osobnych plikach)
+  for (const projectName of Object.keys(configs)) {
+    const cssIndexPath = `dist/css/${projectName}/index.css`;
+    const cssContent = `/* ${projectName} design tokens */\n@import './variables.css';\n@import './classes.css';\n`;
+    
+    await fs.ensureDir(path.dirname(cssIndexPath));
+    await fs.writeFile(cssIndexPath, cssContent);
+  }
+  
+  // Generuj główny index.css
+  const mainCssVariables = Object.keys(configs)
+    .map(project => `@import './${project}/variables.css';`)
+    .join('\n');
+  
+  const mainCssClasses = Object.keys(configs)
+    .map(project => `@import './${project}/classes.css';`)
+    .join('\n');
+  
+  const mainCssContent = `/* All design tokens */\n${mainCssVariables}\n\n/* All utility classes */\n${mainCssClasses}\n`;
+  
+  await fs.writeFile('dist/css/index.css', mainCssContent);
 }
 
 async function copyStaticFiles(): Promise<void> {
@@ -129,6 +157,13 @@ export async function buildAll(): Promise<void> {
     
     console.log('🎉 Budowanie zakończone pomyślnie!');
     console.log('📦 Wyniki dostępne w katalogu dist/');
+    console.log('📋 Dostępne pliki:');
+    console.log('   • dist/scss/[project]/variables.scss - Zmienne SCSS');
+    console.log('   • dist/scss/[project]/classes.scss - Klasy utility SCSS');
+    console.log('   • dist/css/[project]/variables.css - Zmienne CSS');
+    console.log('   • dist/css/[project]/classes.css - Klasy utility CSS');
+    console.log('   • dist/scss/index.scss - Główny plik SCSS');
+    console.log('   • dist/css/index.css - Główny plik CSS');
     
   } catch (error) {
     console.error('💥 Błąd podczas budowania:', error);
