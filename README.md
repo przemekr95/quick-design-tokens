@@ -1,235 +1,181 @@
-Quick Design Tokens
+# Quick Design Tokens
+
 Modern design tokens library with TypeScript support for managing consistent design across your projects.
-Installation
-bash# Using npm
+
+## 🚀 Features
+
+- **Multi-project support** - Global tokens + project-specific overrides (pr-dev, pr-photo)
+- **Multiple output formats** - SCSS, CSS (with planned JS/TS support)
+- **Style Dictionary v5** - Built on the latest version of Style Dictionary
+- **TypeScript first** - Full TypeScript support with type definitions
+- **Figma integration ready** - Structure prepared for Figma token sync
+- **GitHub Packages** - Easy distribution via GitHub Packages
+
+## 📦 Installation
+
+```bash
 npm install @przemekr95/quick-design-tokens
+```
 
-# Using yarn
+## 🎯 Usage
 
-yarn add @przemekr95/quick-design-tokens
+### SCSS
 
-# Using pnpm
+```scss
+// Import all tokens
+@import '@przemekr95/quick-design-tokens/dist/scss/index';
 
-pnpm add @przemekr95/quick-design-tokens
-Features
+// Or import specific project
+@import '@przemekr95/quick-design-tokens/dist/scss/global/variables';
+@import '@przemekr95/quick-design-tokens/dist/scss/pr-dev/variables';
 
-🔄 Fully typed with TypeScript
-🎨 Multiple output formats (CSS, SCSS, JS/TS)
-🧩 Modular architecture with core and theme tokens
-📦 ESM and CommonJS support
-🚀 Easy to extend with custom tokens
-
-Usage
-JavaScript / TypeScript
-javascript// Import all tokens
-import tokens from '@przemekr95/quick-design-tokens';
-
-// Import specific tokens
-import { colors, typography, spacing } from '@przemekr95/quick-design-tokens';
-
-// Import a specific theme
-import { prPhoto, prDev, prIskierka } from '@przemekr95/quick-design-tokens';
-
-// Use tokens in your code
-const primaryColor = colors.primary; // #007bff
-const headingFont = typography.fontFamily.heading; // 'Montserrat, Georgia, serif'
-const mediumSpacing = spacing.md; // '1rem'
-
-// Use theme tokens
-const photoThemePrimary = prPhoto.colors.primary; // #0066cc
-const devThemeSecondary = prDev.colors.secondary; // #0066cc
-const iskierkaAccent = prIskierka.colors.accent; // #ff6d00
-React (JSX)
-jsximport React from 'react';
-import { colors, spacing, typography } from '@przemekr95/quick-design-tokens';
-
-const Button = ({ children, variant = 'primary' }) => {
-const buttonStyle = {
-backgroundColor: colors[variant],
-color: colors.light,
-padding: `${spacing.xs} ${spacing.md}`,
-fontFamily: typography.fontFamily.base,
-fontSize: typography.fontSize.md,
-fontWeight: typography.fontWeight.medium,
-border: 'none',
-borderRadius: '4px',
-cursor: 'pointer',
-};
-
-return <button style={buttonStyle}>{children}</button>;
-};
-
-export default Button;
-CSS
-css/_ Import all tokens _/
-@import '@przemekr95/quick-design-tokens/css';
-
-/_ Import core tokens only _/
-@import '@przemekr95/quick-design-tokens/css/core';
-
-/_ Import specific theme _/
-@import '@przemekr95/quick-design-tokens/css/pr-photo';
-@import '@przemekr95/quick-design-tokens/css/pr-dev';
-@import '@przemekr95/quick-design-tokens/css/pr-iskierka';
-
-/_ Usage example _/
+// Use tokens
 .button {
-background-color: var(--primary);
-color: var(--light);
-padding: var(--spacing-xs) var(--spacing-md);
-font-family: var(--typography-fontFamily-base);
-font-size: var(--typography-fontSize-md);
-font-weight: var(--typography-fontWeight-medium);
+  background-color: $color-primary-500;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
 }
+```
 
-/_ Using theme tokens _/
-.theme-photo .button {
-background-color: var(--primary);
-}
+### CSS
 
-.pr-dev .card {
-box-shadow: var(--boxShadow-md);
-}
-
-.pr-iskierka .highlight {
-box-shadow: var(--lighting-glow-medium);
-background-color: var(--lighting-ambient-soft);
-}
-SCSS
-scss// Import all tokens
-@import '@przemekr95/quick-design-tokens/scss';
-
-// Import core tokens only
-@import '@przemekr95/quick-design-tokens/scss/core';
-
-// Import specific theme
-@import '@przemekr95/quick-design-tokens/scss/pr-photo';
-@import '@przemekr95/quick-design-tokens/scss/pr-dev';
-@import '@przemekr95/quick-design-tokens/scss/pr-iskierka';
-
-// Usage example with SCSS maps
-.button {
-background-color: map-get($colors, "primary");
-  color: map-get($colors, "light");
-padding: map-get($spacing, "xs") map-get($spacing, "md");
-font-family: map-get(map-get($typography, "fontFamily"), "base");
-  font-size: map-get(map-get($typography, "fontSize"), "md");
-font-weight: map-get(map-get($typography, "fontWeight"), "medium");
-}
-
-// Using theme tokens
-.photo-theme {
-$theme-colors: $pr-photo-colors;
+```css
+/* Import CSS custom properties */
+@import '@przemekr95/quick-design-tokens/dist/css/global/variables.css';
 
 .button {
-background-color: map-get($theme-colors, "primary");
+  background-color: var(--color-primary-500);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
 }
-}
-Adding New Tokens
-Adding Core Tokens
+```
 
-Add new token values to the appropriate file in src/tokens/core/:
+## 🏗️ Project Structure
 
-colors.ts - For color tokens
-typography.ts - For typography tokens
-spacing.ts - For spacing, border radius, and box shadow tokens
+```
+figma-export/
+├── global/           # Shared tokens across all projects
+│   ├── color.json
+│   └── font.json
+├── pr-dev/          # Developer tools project
+│   ├── color.json
+│   └── font.json
+└── pr-photo/        # Photo editing project
+    ├── color.json
+    └── font.json
+```
 
-Update the corresponding TypeScript interface in src/types/tokens.ts
+## 🎨 Available Tokens
 
-Example - Adding a new color token:
-typescript// src/tokens/core/colors.ts
-export const colors: ColorTokens = {
-primary: '#007bff',
-secondary: '#6c757d',
-// Add your new color
-tertiary: '#20c997',
-// ...other colors
-};
+### Global Tokens
 
-// src/types/tokens.ts
-export interface ColorTokens {
-primary: string;
-secondary: string;
-// Add your new color
-tertiary: string;
-// ...other colors
-[key: string]: string;
-}
-Adding New Themes
+- **Colors**: Primary palette, neutral grays, semantic colors
+- **Typography**: Font families, sizes, weights
 
-Create a new theme file in src/tokens/themes/:
+### pr-dev Project
 
-typescript// src/tokens/themes/pr-newtheme.ts
-import { ThemeTokens } from '../../types/tokens.js';
-import { coreTokens } from '../core/index.js';
-import merge from 'lodash.merge';
+- **Colors**: Brand colors, developer-specific syntax highlighting
+- **Typography**: Code fonts, UI fonts, documentation fonts
 
-export const prNewTheme: ThemeTokens = merge({}, coreTokens, {
-colors: {
-primary: '#8e44ad',
-secondary: '#2ecc71',
-// Add your custom colors
-},
-// Add your custom token sections
-customSection: {
-feature1: 'value1',
-feature2: 'value2'
-}
-});
+### pr-photo Project
 
-Register the new theme in src/tokens/themes/index.ts:
+- **Colors**: Creative palettes, photo overlays, filter colors
+- **Typography**: Artistic fonts, caption styles, watermark fonts
 
-typescriptimport { prPhoto } from './pr-photo.js';
-import { prDev } from './pr-dev.js';
-import { prNewTheme } from './pr-newtheme.js';
-import { ThemeMap } from '../../types/tokens.js';
+## 🔧 Development
 
-export const themes: ThemeMap = {
-'pr-photo': prPhoto,
-'pr-dev': prDev,
-'pr-newtheme': prNewTheme,
-};
+### Build Tokens
 
-export { prPhoto, prDev, prNewTheme };
-
-Update src/tokens/index.ts to include the new theme:
-
-typescriptexport const projectTokens = {
-'pr-photo': prPhoto,
-'pr-dev': prDev,
-'pr-newtheme': prNewTheme
-};
-
-Export the new theme in src/index.ts:
-
-typescriptexport {
-// ...existing exports
-prPhoto,
-prDev,
-prNewTheme
-};
-
-Update the ThemeKey type in src/types/tokens.ts:
-
-typescriptexport type ThemeKey = 'pr-photo' | 'pr-dev' | 'pr-newtheme';
-
-Update the package.json exports to include the new theme:
-
-json"exports": {
-// ...existing exports
-"./scss/pr-newtheme": {
-"default": "./dist/scss/pr_newtheme.scss"
-},
-"./css/pr-newtheme": {
-"default": "./dist/css/pr_newtheme.css"
-}
-}
-Building
-bash# Build all output formats
+```bash
 npm run build
+```
 
-# Development mode with watch
+### Watch Mode
 
+```bash
 npm run dev
-License
-MIT
+```
+
+### Type Checking
+
+```bash
+npm run typecheck
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+## 📋 Roadmap
+
+### Phase 1 - Current (SCSS/CSS Support)
+
+- ✅ Style Dictionary v5 setup
+- ✅ Multi-project token structure
+- ✅ SCSS variables generation
+- ✅ CSS custom properties generation
+- ✅ Build system with preprocessing
+
+### Phase 2 - JavaScript/TypeScript Support
+
+- [ ] ESM module generation (`dist/js/esm/`)
+- [ ] CommonJS module generation (`dist/js/cjs/`)
+- [ ] TypeScript definitions (`dist/types/`)
+- [ ] Token utility functions
+- [ ] React/Vue component helpers
+
+### Phase 3 - Figma Integration
+
+- [ ] Figma API integration
+- [ ] Automated token sync
+- [ ] CI/CD pipeline for token updates
+- [ ] Design-code consistency validation
+
+### Phase 4 - Advanced Features
+
+- [ ] Theme system (light/dark modes)
+- [ ] Token composition and references
+- [ ] Mobile platform support (iOS/Android)
+- [ ] Component token mapping
+
+## 🔧 Configuration
+
+The system uses Style Dictionary v5 with custom preprocessing. Configuration is split across:
+
+- `src/config.ts` - Main Style Dictionary configuration
+- `src/build.ts` - Build pipeline and output generation
+- `src/preformat.ts` - Token preprocessing and normalization
+
+## 📦 Distribution
+
+Built tokens are available in:
+
+```
+dist/
+├── scss/
+│   ├── global/variables.scss
+│   ├── pr-dev/variables.scss
+│   ├── pr-photo/variables.scss
+│   └── index.scss
+├── css/
+│   ├── global/variables.css
+│   ├── pr-dev/variables.css
+│   └── pr-photo/variables.css
+└── package.json
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Add your tokens to the appropriate JSON files
+4. Run `npm run build` to generate outputs
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 📄 License
+
+MIT © przemekr95

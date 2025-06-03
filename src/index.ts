@@ -1,22 +1,15 @@
-import { tokens, globalTokens, projectTokens, coreTokens } from './tokens/index.js';
-import { colors, typography, spacing, borderRadius, boxShadow } from './tokens/core/index.js';
-import { prPhoto, prDev, prIskierka } from './tokens/themes/index.js';
+// TODO: Główny plik eksportu - obecnie placeholder
+// Po dodaniu wsparcia dla JS/TS tokenów, dodaj tutaj:
+// - Eksport wszystkich tokenów jako JavaScript objects
+// - Eksport typów TypeScript
+// - Utility functions dla pracy z tokenami
 
-export default tokens;
+export * from './build.js';
+export * from './config.js';
+export * from './preformat.js';
 
-export {
-  // Core Tokens
-  coreTokens,
-  // Global tokens
-  globalTokens,
-  colors,
-  typography,
-  spacing,
-  borderRadius,
-  boxShadow,
-  // Project tokens
-  projectTokens,
-  prPhoto,
-  prDev,
-  prIskierka
-};
+// TODO: Dodaj eksporty tokenów gdy będą dostępne w JS/TS:
+// export { tokens as globalTokens } from '../dist/js/esm/global/index.js';
+// export { tokens as prDevTokens } from '../dist/js/esm/pr-dev/index.js';
+// export { tokens as prPhotoTokens } from '../dist/js/esm/pr-photo/index.js';
+// export type { TokenValue, TokenType } from './types.js';

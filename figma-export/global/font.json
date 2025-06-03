@@ -1,0 +1,112 @@
+{
+  "font": {
+    "family": {
+      "primary": {
+        "value": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
+        "type": "fontFamily"
+      },
+      "mono": {
+        "value": "'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace",
+        "type": "fontFamily"
+      },
+      "display": {
+        "value": "'Cal Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+        "type": "fontFamily"
+      }
+    },
+    "weight": {
+      "light": {
+        "value": "300",
+        "type": "fontWeight"
+      },
+      "regular": {
+        "value": "400",
+        "type": "fontWeight"
+      },
+      "medium": {
+        "value": "500",
+        "type": "fontWeight"
+      },
+      "semibold": {
+        "value": "600",
+        "type": "fontWeight"
+      },
+      "bold": {
+        "value": "700",
+        "type": "fontWeight"
+      }
+    },
+    "size": {
+      "xs": {
+        "fontSize": {
+          "value": "12px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "16px",
+          "type": "lineHeight"
+        }
+      },
+      "sm": {
+        "fontSize": {
+          "value": "14px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "20px",
+          "type": "lineHeight"
+        }
+      },
+      "md": {
+        "fontSize": {
+          "value": "16px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "24px",
+          "type": "lineHeight"
+        }
+      },
+      "lg": {
+        "fontSize": {
+          "value": "18px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "28px",
+          "type": "lineHeight"
+        }
+      },
+      "xl": {
+        "fontSize": {
+          "value": "20px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "28px",
+          "type": "lineHeight"
+        }
+      },
+      "2xl": {
+        "fontSize": {
+          "value": "24px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "32px",
+          "type": "lineHeight"
+        }
+      },
+      "3xl": {
+        "fontSize": {
+          "value": "30px",
+          "type": "fontSize"
+        },
+        "lineHeight": {
+          "value": "36px",
+          "type": "lineHeight"
+        }
+      }
+    }
+  }
+}
