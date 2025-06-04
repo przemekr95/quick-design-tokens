@@ -204,25 +204,89 @@ StyleDictionary.registerFormat({
   }
 });
 
-// Custom formaty - można rozszerzyć w przyszłości  
+
+// Poprawiona funkcja dla scss/font-classes w config.ts
+
 StyleDictionary.registerFormat({
-  name: 'scss/variables-with-map',
+  name: 'scss/font-classes',
   format: function({ dictionary, options }): string {
     const header = getFileHeader(options);
     
     let output = header;
     
-    // Generuj zmienne SCSS
+    // Znajdź unikalne rozmiary fontów (bez fontSize/lineHeight suffix)
+    const fontSizeGroups = new Set<string>();
+    
     dictionary.allTokens.forEach((token: any) => {
-      output += `$${token.name}: ${token.value};\n`;
+      if (token.path.includes('font') && 
+          token.path.includes('size') && 
+          (token.path.includes('fontSize') || token.path.includes('lineHeight'))) {
+        
+        // Usuń ostatni element (fontSize lub lineHeight) z ścieżki
+        const basePath = token.path.slice(0, -1);
+        const baseKey = basePath.join('-');
+        fontSizeGroups.add(baseKey);
+      }
     });
     
-    output += '\n// Token map for programmatic access\n';
-    output += '$tokens: (\n';
-    dictionary.allTokens.forEach((token: any) => {
-      output += `  '${token.name}': ${token.value},\n`;
+    // Generuj klasy dla każdej grupy
+    fontSizeGroups.forEach((baseKey) => {
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${baseKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
     });
-    output += ');\n';
+    
+    return output;
+  }
+});
+
+// Analogiczna poprawka dla css/font-classes
+StyleDictionary.registerFormat({
+  name: 'css/font-classes',
+  format: function({ dictionary, options }): string {
+    const header = getCssFileHeader(options);
+    
+    let output = header;
+    
+    // Znajdź unikalne rozmiary fontów
+    const fontSizeGroups = new Set<string>();
+    
+    dictionary.allTokens.forEach((token: any) => {
+      if (token.path.includes('font') && 
+          token.path.includes('size') && 
+          (token.path.includes('fontSize') || token.path.includes('lineHeight'))) {
+        
+        const basePath = token.path.slice(0, -1);
+        const baseKey = basePath.join('-');
+        fontSizeGroups.add(baseKey);
+      }
+    });
+    
+    fontSizeGroups.forEach((baseKey) => {
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${baseKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
+    });
     
     return output;
   }
