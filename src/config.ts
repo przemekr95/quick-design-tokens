@@ -1,10 +1,19 @@
-import StyleDictionary, { Dictionary } from 'style-dictionary';
+import StyleDictionary from 'style-dictionary';
 
 // TODO: Dodaj konfigurację dla formatów CJS/ESM:
 // - Dodaj format 'javascript/es6' dla ESM
 // - Dodaj format 'javascript/cjs' dla CommonJS
 // - Dodaj format 'typescript/es6-declarations' dla typów TypeScript
 // - Rozważ dodanie custom formatów dla React Native, iOS, Android
+
+interface FileOptions {
+  destination: string;
+  format: string;
+  options?: {
+    showFileHeader?: boolean;
+    fileHeader?: () => string[];
+  };
+}
 
 interface ProjectConfig {
   name: string;
@@ -13,26 +22,12 @@ interface ProjectConfig {
     scss: {
       transformGroup: string;
       buildPath: string;
-      files: Array<{
-        destination: string;
-        format: string;
-        options?: {
-          showFileHeader?: boolean;
-          fileHeader?: (fileHeader: { file: { destination: string }; [key: string]: any }) => string[];
-        };
-      }>;
+      files: FileOptions[];
     };
     css: {
       transformGroup: string;
       buildPath: string;
-      files: Array<{
-        destination: string;
-        format: string;
-        options?: {
-          showFileHeader?: boolean;
-          fileHeader?: (fileHeader: { file: { destination: string }; [key: string]: any }) => string[];
-        };
-      }>;
+      files: FileOptions[];
     };
   };
 }
@@ -56,6 +51,18 @@ const createProjectConfig = (projectName: string, sources: string[]): ProjectCon
               `Built on: ${new Date().toISOString()}`
             ]
           }
+        },
+        {
+          destination: 'classes.scss',
+          format: 'scss/font-classes',
+          options: {
+            showFileHeader: true,
+            fileHeader: () => [
+              `Font utility classes for ${projectName} project`,
+              'Generated automatically - do not edit directly',
+              `Built on: ${new Date().toISOString()}`
+            ]
+          }
         }
       ]
     },
@@ -74,13 +81,24 @@ const createProjectConfig = (projectName: string, sources: string[]): ProjectCon
               `Built on: ${new Date().toISOString()}`
             ]
           }
+        },
+        {
+          destination: 'classes.css',
+          format: 'css/font-classes',
+          options: {
+            showFileHeader: true,
+            fileHeader: () => [
+              `Font utility classes for ${projectName} project`,
+              'Generated automatically - do not edit directly',
+              `Built on: ${new Date().toISOString()}`
+            ]
+          }
         }
       ]
     }
   }
 });
 
-// Konfiguracje dla różnych projektów
 export const configs = {
   global: createProjectConfig('global', [
     'figma-export/global/**/*.json'
@@ -95,26 +113,165 @@ export const configs = {
   ])
 };
 
-// Custom formaty - można rozszerzyć w przyszłości
+function getFileHeader(options: any): string {
+  if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
+    return options.fileHeader().map((line: string) => `// ${line}`).join('\n') + '\n\n';
+  }
+  return '';
+}
+
+function getCssFileHeader(options: any): string {
+  if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
+    return options.fileHeader().map((line: string) => `/* ${line} */`).join('\n') + '\n\n';
+  }
+  return '';
+}
+
 StyleDictionary.registerFormat({
-  name: 'scss/variables-with-map',
-  format: function({ dictionary, options, file }: { dictionary: Dictionary; options?: any; file?: any }) {
-    const header = options?.showFileHeader && options?.fileHeader ? 
-      options.fileHeader({ file }).map((line: string) => `// ${line}`).join('\n') + '\n\n' : '';
+  name: 'scss/font-classes',
+  format: function({ dictionary, options }): string {
+    const header = getFileHeader(options);
     
     let output = header;
     
-    // Generuj zmienne SCSS
-    dictionary.allTokens.forEach((token: any) => {
-      output += `$${token.name}: ${token.value};\n`;
+    const fontSizeTokens = dictionary.allTokens.filter((token: any) => 
+      token.path.includes('font') && 
+      token.path.includes('size') && 
+      !token.path.includes('fontSize') && 
+      !token.path.includes('lineHeight')
+    );
+    
+    fontSizeTokens.forEach((token: any) => {
+      const sizeKey = token.path.join('-');
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${sizeKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${sizeKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${sizeKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
     });
     
-    output += '\n// Token map for programmatic access\n';
-    output += '$tokens: (\n';
-    dictionary.allTokens.forEach((token: any) => {
-      output += `  '${token.name}': ${token.value},\n`;
+    return output;
+  }
+});
+
+StyleDictionary.registerFormat({
+  name: 'css/font-classes',
+  format: function({ dictionary, options }): string {
+    const header = getCssFileHeader(options);
+    
+    let output = header;
+    
+    const fontSizeTokens = dictionary.allTokens.filter((token: any) => 
+      token.path.includes('font') && 
+      token.path.includes('size') && 
+      !token.path.includes('fontSize') && 
+      !token.path.includes('lineHeight')
+    );
+    
+    fontSizeTokens.forEach((token: any) => {
+      const sizeKey = token.path.join('-');
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${sizeKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${sizeKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${sizeKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
     });
-    output += ');\n';
+    
+    return output;
+  }
+});
+
+StyleDictionary.registerFormat({
+  name: 'scss/font-classes',
+  format: function({ dictionary, options }): string {
+    const header = getFileHeader(options);
+    
+    let output = header;
+
+    const fontSizeGroups = new Set<string>();
+    
+    dictionary.allTokens.forEach((token: any) => {
+      if (token.path.includes('font') && 
+          token.path.includes('size') && 
+          (token.path.includes('fontSize') || token.path.includes('lineHeight'))) {
+        
+        const basePath = token.path.slice(0, -1);
+        const baseKey = basePath.join('-');
+        fontSizeGroups.add(baseKey);
+      }
+    });
+    
+    fontSizeGroups.forEach((baseKey) => {
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${baseKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
+    });
+    
+    return output;
+  }
+});
+
+StyleDictionary.registerFormat({
+  name: 'css/font-classes',
+  format: function({ dictionary, options }): string {
+    const header = getCssFileHeader(options);
+    
+    let output = header;
+    
+    const fontSizeGroups = new Set<string>();
+    
+    dictionary.allTokens.forEach((token: any) => {
+      if (token.path.includes('font') && 
+          token.path.includes('size') && 
+          (token.path.includes('fontSize') || token.path.includes('lineHeight'))) {
+        
+        const basePath = token.path.slice(0, -1);
+        const baseKey = basePath.join('-');
+        fontSizeGroups.add(baseKey);
+      }
+    });
+    
+    fontSizeGroups.forEach((baseKey) => {
+      const fontSizeToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-fontSize`
+      );
+      const lineHeightToken = dictionary.allTokens.find((t: any) => 
+        t.path.join('-') === `${baseKey}-lineHeight`
+      );
+      
+      if (fontSizeToken && lineHeightToken) {
+        output += `.${baseKey} {\n`;
+        output += `  font-size: ${fontSizeToken.value};\n`;
+        output += `  line-height: ${lineHeightToken.value};\n`;
+        output += `}\n\n`;
+      }
+    });
     
     return output;
   }

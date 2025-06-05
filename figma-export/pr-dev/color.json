@@ -19,18 +19,6 @@
     "text": {
       "value": "#0f172a",
       "type": "color"
-    },
-    "success": {
-      "value": "#059669",
-      "type": "color"
-    },
-    "warning": {
-      "value": "#d97706",
-      "type": "color"
-    },
-    "error": {
-      "value": "#dc2626",
-      "type": "color"
     }
   }
 }
