@@ -99,7 +99,6 @@ const createProjectConfig = (projectName: string, sources: string[]): ProjectCon
   }
 });
 
-// Konfiguracje dla różnych projektów
 export const configs = {
   global: createProjectConfig('global', [
     'figma-export/global/**/*.json'
@@ -114,7 +113,6 @@ export const configs = {
   ])
 };
 
-// Helper function to safely get file header
 function getFileHeader(options: any): string {
   if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
     return options.fileHeader().map((line: string) => `// ${line}`).join('\n') + '\n\n';
@@ -122,7 +120,6 @@ function getFileHeader(options: any): string {
   return '';
 }
 
-// Helper function to safely get CSS file header
 function getCssFileHeader(options: any): string {
   if (options?.showFileHeader && typeof options?.fileHeader === 'function') {
     return options.fileHeader().map((line: string) => `/* ${line} */`).join('\n') + '\n\n';
@@ -130,7 +127,6 @@ function getCssFileHeader(options: any): string {
   return '';
 }
 
-// Custom format dla klas SCSS z fontami
 StyleDictionary.registerFormat({
   name: 'scss/font-classes',
   format: function({ dictionary, options }): string {
@@ -138,7 +134,6 @@ StyleDictionary.registerFormat({
     
     let output = header;
     
-    // Znajdź tokeny font size (te które mają fontSize i lineHeight)
     const fontSizeTokens = dictionary.allTokens.filter((token: any) => 
       token.path.includes('font') && 
       token.path.includes('size') && 
@@ -167,7 +162,6 @@ StyleDictionary.registerFormat({
   }
 });
 
-// Custom format dla klas CSS z fontami
 StyleDictionary.registerFormat({
   name: 'css/font-classes',
   format: function({ dictionary, options }): string {
@@ -175,7 +169,6 @@ StyleDictionary.registerFormat({
     
     let output = header;
     
-    // Znajdź tokeny font size (te które mają fontSize i lineHeight)
     const fontSizeTokens = dictionary.allTokens.filter((token: any) => 
       token.path.includes('font') && 
       token.path.includes('size') && 
@@ -204,17 +197,13 @@ StyleDictionary.registerFormat({
   }
 });
 
-
-// Poprawiona funkcja dla scss/font-classes w config.ts
-
 StyleDictionary.registerFormat({
   name: 'scss/font-classes',
   format: function({ dictionary, options }): string {
     const header = getFileHeader(options);
     
     let output = header;
-    
-    // Znajdź unikalne rozmiary fontów (bez fontSize/lineHeight suffix)
+
     const fontSizeGroups = new Set<string>();
     
     dictionary.allTokens.forEach((token: any) => {
@@ -222,14 +211,12 @@ StyleDictionary.registerFormat({
           token.path.includes('size') && 
           (token.path.includes('fontSize') || token.path.includes('lineHeight'))) {
         
-        // Usuń ostatni element (fontSize lub lineHeight) z ścieżki
         const basePath = token.path.slice(0, -1);
         const baseKey = basePath.join('-');
         fontSizeGroups.add(baseKey);
       }
     });
     
-    // Generuj klasy dla każdej grupy
     fontSizeGroups.forEach((baseKey) => {
       const fontSizeToken = dictionary.allTokens.find((t: any) => 
         t.path.join('-') === `${baseKey}-fontSize`
@@ -250,7 +237,6 @@ StyleDictionary.registerFormat({
   }
 });
 
-// Analogiczna poprawka dla css/font-classes
 StyleDictionary.registerFormat({
   name: 'css/font-classes',
   format: function({ dictionary, options }): string {
@@ -258,7 +244,6 @@ StyleDictionary.registerFormat({
     
     let output = header;
     
-    // Znajdź unikalne rozmiary fontów
     const fontSizeGroups = new Set<string>();
     
     dictionary.allTokens.forEach((token: any) => {

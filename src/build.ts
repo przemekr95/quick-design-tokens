@@ -17,30 +17,28 @@ import path from 'path';
 // 4. Dodaj source maps
 
 async function cleanDistDirectory(): Promise<void> {
-  console.log('🧹 Czyszczenie katalogu dist...');
+  console.log('🧹 Cleaning the dist directory...');
   try {
     await fs.remove('dist');
     await fs.ensureDir('dist');
-    console.log('✅ Katalog dist wyczyszczony i utworzony');
+    console.log('✅ Dist directory cleared and created...');
   } catch (error) {
-    console.error('❌ Błąd podczas czyszczenia dist:', error);
+    console.error('❌ Error while cleaning dist:', error);
     throw error;
   }
 }
 
 async function buildProject(projectName: string): Promise<void> {
-  console.log(`🏗️  Budowanie projektu: ${projectName}`);
+  console.log(`🏗️  Building the project: ${projectName}`);
   
   const config = configs[projectName as keyof typeof configs];
   if (!config) {
-    throw new Error(`Nie znaleziono konfiguracji dla projektu: ${projectName}`);
+    throw new Error(`No configuration found for the project: ${projectName}`);
   }
 
   try {
-    // Preprocess tokens przed budowaniem
     const processedTokens = await preprocessTokens(config.source);
-    
-    // Stwórz tymczasowe pliki z przetworzonymi tokenami
+
     const tempDir = `temp/${projectName}`;
     await fs.ensureDir(tempDir);
     
@@ -49,33 +47,26 @@ async function buildProject(projectName: string): Promise<void> {
       await fs.writeJson(tempFilePath, tokens, { spaces: 2 });
     }
 
-    // Zaktualizuj source paths do tymczasowych plików
     const updatedConfig = {
       ...config,
       source: [`${tempDir}/**/*.json`]
     };
 
-    // Zbuduj Style Dictionary
     const sd = new StyleDictionary(updatedConfig);
     await sd.buildAllPlatforms();
 
-    // Wyczyść tymczasowe pliki
     await fs.remove(`temp/${projectName}`);
     
-    console.log(`✅ Projekt ${projectName} zbudowany pomyślnie`);
+    console.log(`✅ Project ${projectName} built successfully`);
   } catch (error) {
-    console.error(`❌ Błąd podczas budowania projektu ${projectName}:`, error);
+    console.error(`❌ Error while building a project ${projectName}:`, error);
     throw error;
   }
 }
 
 async function generateIndexFiles(): Promise<void> {
-  console.log('📝 Generowanie plików index...');
-  
-  // TODO: Dodaj generowanie index.js, index.d.ts dla głównego eksportu
-  // Obecnie skupiamy się na SCSS/CSS
-  
-  // Generuj index.scss dla każdego projektu (z variables i classes)
+  console.log('📝 Generating index files...');
+
   for (const projectName of Object.keys(configs)) {
     const scssIndexPath = `dist/scss/${projectName}/index.scss`;
     const scssContent = `// ${projectName} design tokens\n@import './variables';\n@import './classes';\n`;
@@ -83,8 +74,7 @@ async function generateIndexFiles(): Promise<void> {
     await fs.ensureDir(path.dirname(scssIndexPath));
     await fs.writeFile(scssIndexPath, scssContent);
   }
-  
-  // Generuj główny index.scss (z variables i classes)
+
   const mainScssVariables = Object.keys(configs)
     .map(project => `@import './${project}/variables';`)
     .join('\n');
@@ -97,7 +87,6 @@ async function generateIndexFiles(): Promise<void> {
   
   await fs.writeFile('dist/scss/index.scss', mainScssContent);
 
-  // Generuj index.css dla CSS (tylko variables, classes są już w osobnych plikach)
   for (const projectName of Object.keys(configs)) {
     const cssIndexPath = `dist/css/${projectName}/index.css`;
     const cssContent = `/* ${projectName} design tokens */\n@import './variables.css';\n@import './classes.css';\n`;
@@ -105,8 +94,7 @@ async function generateIndexFiles(): Promise<void> {
     await fs.ensureDir(path.dirname(cssIndexPath));
     await fs.writeFile(cssIndexPath, cssContent);
   }
-  
-  // Generuj główny index.css
+
   const mainCssVariables = Object.keys(configs)
     .map(project => `@import './${project}/variables.css';`)
     .join('\n');
@@ -121,21 +109,18 @@ async function generateIndexFiles(): Promise<void> {
 }
 
 async function copyStaticFiles(): Promise<void> {
-  console.log('📋 Kopiowanie plików statycznych...');
+  console.log('📋 Copying static files...');
   
-  // Skopiuj README i package.json do dist (jeśli potrzebne)
   const packageJson = await fs.readJson('package.json');
   
-  // Utwórz package.json dla dystrybucji
   const distPackageJson = {
     ...packageJson,
-    scripts: undefined, // Usuń scripts z wersji produkcyjnej
-    devDependencies: undefined, // Usuń devDependencies
+    scripts: undefined,
+    devDependencies: undefined,
   };
   
   await fs.writeJson('dist/package.json', distPackageJson, { spaces: 2 });
-  
-  // Skopiuj README
+
   if (await fs.pathExists('README.md')) {
     await fs.copy('README.md', 'dist/README.md');
   }
@@ -143,11 +128,10 @@ async function copyStaticFiles(): Promise<void> {
 
 export async function buildAll(): Promise<void> {
   try {
-    console.log('🚀 Rozpoczynanie budowania design tokens...');
+    console.log('🚀 Starting to build design tokens...');
     
     await cleanDistDirectory();
-    
-    // Zbuduj wszystkie projekty
+
     for (const projectName of Object.keys(configs)) {
       await buildProject(projectName);
     }
@@ -155,29 +139,27 @@ export async function buildAll(): Promise<void> {
     await generateIndexFiles();
     await copyStaticFiles();
     
-    console.log('🎉 Budowanie zakończone pomyślnie!');
-    console.log('📦 Wyniki dostępne w katalogu dist/');
-    console.log('📋 Dostępne pliki:');
-    console.log('   • dist/scss/[project]/variables.scss - Zmienne SCSS');
-    console.log('   • dist/scss/[project]/classes.scss - Klasy utility SCSS');
-    console.log('   • dist/css/[project]/variables.css - Zmienne CSS');
-    console.log('   • dist/css/[project]/classes.css - Klasy utility CSS');
-    console.log('   • dist/scss/index.scss - Główny plik SCSS');
-    console.log('   • dist/css/index.css - Główny plik CSS');
+    console.log('🎉 Building completed successfully!');
+    console.log('📦 Results available in the catalog dist/');
+    console.log('📋 Available files:');
+    console.log('   • dist/scss/[project]/variables.scss - SCSS variables');
+    console.log('   • dist/scss/[project]/classes.scss - SCSS utility classes');
+    console.log('   • dist/css/[project]/variables.css - CSS variables');
+    console.log('   • dist/css/[project]/classes.css - CSS utility classes');
+    console.log('   • dist/scss/index.scss - Main SCSS file');
+    console.log('   • dist/css/index.css - Main CSS file');
     
   } catch (error) {
-    console.error('💥 Błąd podczas budowania:', error);
+    console.error('💥 Error while building:', error);
     process.exit(1);
   }
 }
 
-// Uruchom build jeśli plik jest wywoływany bezpośrednio
 import { fileURLToPath } from 'url';
 
 const currentFile = fileURLToPath(import.meta.url);
 const executedFile = process.argv[1];
 
-// Normalizuj ścieżki dla porównania (Windows vs Unix)
 const normalizedCurrent = currentFile.replace(/\\/g, '/');
 const normalizedExecuted = executedFile.replace(/\\/g, '/');
 
