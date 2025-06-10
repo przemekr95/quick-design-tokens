@@ -1,6 +1,5 @@
 import StyleDictionary from 'style-dictionary';
 
-// Wspólna logika dla generowania klas fontów
 function createFontClassesFormat(type: 'scss' | 'css') {
   const commentPrefix = type === 'scss' ? '//' : '/*';
   const commentSuffix = type === 'css' ? ' */' : '';
@@ -13,7 +12,6 @@ function createFontClassesFormat(type: 'scss' | 'css') {
     let output = header;
     const fontSizeGroups = new Set<string>();
     
-    // Znajdź wszystkie grupy font-size
     dictionary.allTokens.forEach((token: any) => {
       if (token.path.includes('font') && 
           token.path.includes('size') && 
@@ -23,7 +21,6 @@ function createFontClassesFormat(type: 'scss' | 'css') {
       }
     });
     
-    // Generuj klasy
     fontSizeGroups.forEach((baseKey) => {
       const fontSizeToken = dictionary.allTokens.find((t: any) => 
         t.path.join('-') === `${baseKey}-fontSize`
@@ -44,7 +41,6 @@ function createFontClassesFormat(type: 'scss' | 'css') {
   };
 }
 
-// Rejestracja formatów
 StyleDictionary.registerFormat({
   name: 'scss/font-classes',
   format: createFontClassesFormat('scss')
@@ -55,7 +51,6 @@ StyleDictionary.registerFormat({
   format: createFontClassesFormat('css')
 });
 
-// Uproszczona konfiguracja projektów
 const createProjectConfig = (projectName: string, sources: string[]) => ({
   name: projectName,
   source: sources,

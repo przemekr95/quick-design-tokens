@@ -1,3 +1,4 @@
+import StyleDictionary from 'style-dictionary';
 import { configs } from './config.js';
 import fs from 'fs-extra';
 import path from 'path';
@@ -7,7 +8,6 @@ async function generateIndexFiles(): Promise<void> {
   
   const projects = Object.keys(configs);
   
-  // Generuj pliki index dla każdego projektu
   await Promise.all(
     projects.flatMap(projectName => [
       generateProjectIndex('scss', projectName),
@@ -15,7 +15,6 @@ async function generateIndexFiles(): Promise<void> {
     ])
   );
   
-  // Generuj główne pliki index
   await Promise.all([
     generateMainIndex('scss', projects),
     generateMainIndex('css', projects)
@@ -68,7 +67,6 @@ async function generateMainIndex(type: 'scss' | 'css', projects: string[]): Prom
   await fs.writeFile(`dist/${type}/index.${extension}`, content);
 }
 
-// Uproszczona funkcja budowania projektu
 async function buildProject(projectName: string): Promise<void> {
   console.log(`🏗️  Building project: ${projectName}`);
   
@@ -81,18 +79,15 @@ async function buildProject(projectName: string): Promise<void> {
     const { preprocessTokens } = await import('./preformat.js');
     const processedTokens = await preprocessTokens(config.source);
 
-    // Użyj tymczasowych plików
     const tempDir = `temp/${projectName}`;
     await fs.ensureDir(tempDir);
     
-    // Zapisz przetworzone tokeny
     await Promise.all(
       Object.entries(processedTokens).map(([category, tokens]) =>
         fs.writeJson(`${tempDir}/${category}.json`, tokens, { spaces: 2 })
       )
     );
 
-    // Zbuduj z tymczasowych plików
     const sd = new StyleDictionary({
       ...config,
       source: [`${tempDir}/**/*.json`]
@@ -107,3 +102,30 @@ async function buildProject(projectName: string): Promise<void> {
     throw error;
   }
 }
+
+async function build(): Promise<void> {
+  console.log('🚀 Starting build process...');
+  
+  try {
+    await fs.remove('dist');
+    await fs.remove('temp');
+    
+    const projects = Object.keys(configs);
+    await Promise.all(projects.map(buildProject));
+    
+    await generateIndexFiles();
+    
+    console.log('✅ Build completed successfully!');
+  } catch (error) {
+    console.error('❌ Build failed:', error);
+    process.exit(1);
+  }
+}
+
+console.log('🚀 Starting build process...');
+build().catch((error) => {
+  console.error('❌ Build failed:', error);
+  process.exit(1);
+});
+
+export { build, buildProject, generateIndexFiles };

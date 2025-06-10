@@ -21,7 +21,6 @@ interface ProcessedTokens {
 export async function preprocessTokens(sourcePaths: string[]): Promise<ProcessedTokens> {
   const processedTokens: ProcessedTokens = {};
   
-  // Wczytaj i scal wszystkie pliki
   for (const sourcePath of sourcePaths) {
     const files = await glob(sourcePath);
     
@@ -87,7 +86,6 @@ function processToken(token: Token, path: string[], category: string): Token {
     description: token.description || `${category} token: ${path.join(' ')}`
   };
   
-  // Mapowanie normalizacji wartości
   const normalizers: Record<string, (value: any, path: string[]) => any> = {
     color: normalizeColorValue,
     font: (value, path) => normalizeFontValue(value, path)
@@ -110,8 +108,7 @@ function normalizeColorValue(value: string): string {
 
 function normalizeFontValue(value: string | number, path: string[]): string | number {
   const lastSegment = path[path.length - 1];
-  
-  // Mapowanie normalizacji dla różnych typów wartości font
+
   const fontNormalizers: Record<string, (v: any) => any> = {
     fontSize: (v) => typeof v === 'number' ? `${v}px` : v,
     lineHeight: (v) => typeof v === 'number' ? `${v}px` : v,

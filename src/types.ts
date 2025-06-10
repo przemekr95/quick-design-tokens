@@ -42,6 +42,4 @@ export interface ProjectConfig {
 
 export type ProjectName = 'global' | 'pr-dev' | 'pr-photo';
 
-export interface BuildConfigs {
-  [K in ProjectName]: ProjectConfig;
-}
+export type BuildConfigs = Record<ProjectName, ProjectConfig>;
