@@ -6,6 +6,7 @@ interface Token {
   value: string | number;
   type?: string;
   description?: string;
+  name?: string;
   [key: string]: any;
 }
 
@@ -23,18 +24,14 @@ export async function preprocessTokens(sourcePaths: string[]): Promise<Processed
   for (const sourcePath of sourcePaths) {
     const files = await glob(sourcePath);
     
-    for (const filePath of files) {
-      const fileName = path.basename(filePath, '.json');
+    await Promise.all(files.map(async (filePath) => {
+      const category = path.basename(filePath, '.json');
       const fileContent = await fs.readJson(filePath);
       
-      const category = fileName;
-      
-      if (!processedTokens[category]) {
-        processedTokens[category] = {};
-      }
-
-      processedTokens[category] = deepMerge(processedTokens[category], fileContent);
-    }
+      processedTokens[category] = processedTokens[category] 
+        ? deepMerge(processedTokens[category], fileContent)
+        : fileContent;
+    }));
   }
   
   return postprocessTokens(processedTokens);
@@ -43,13 +40,13 @@ export async function preprocessTokens(sourcePaths: string[]): Promise<Processed
 function deepMerge(target: TokenGroup, source: TokenGroup): TokenGroup {
   const result = { ...target };
   
-  for (const key in source) {
-    if (source[key] && typeof source[key] === 'object' && !isToken(source[key])) {
-      result[key] = deepMerge(result[key] as TokenGroup || {}, source[key] as TokenGroup);
+  Object.entries(source).forEach(([key, value]) => {
+    if (value && typeof value === 'object' && !isToken(value)) {
+      result[key] = deepMerge((result[key] as TokenGroup) || {}, value as TokenGroup);
     } else {
-      result[key] = source[key];
+      result[key] = value;
     }
-  }
+  });
   
   return result;
 }
@@ -59,89 +56,65 @@ function isToken(obj: any): obj is Token {
 }
 
 function postprocessTokens(tokens: ProcessedTokens): ProcessedTokens {
-  const processed: ProcessedTokens = {};
-  
-  for (const [category, tokenGroup] of Object.entries(tokens)) {
-    processed[category] = processTokenGroup(tokenGroup, category);
-  }
-  
-  return processed;
+  return Object.fromEntries(
+    Object.entries(tokens).map(([category, tokenGroup]) => [
+      category,
+      processTokenGroup(tokenGroup, category)
+    ])
+  );
 }
 
 function processTokenGroup(tokenGroup: TokenGroup, category: string, parentPath: string[] = []): TokenGroup {
-  const processed: TokenGroup = {};
-  
-  for (const [key, value] of Object.entries(tokenGroup)) {
-    const currentPath = [...parentPath, key];
-    
-    if (isToken(value)) {
-      processed[key] = processToken(value, currentPath, category);
-    } else {
-      processed[key] = processTokenGroup(value as TokenGroup, category, currentPath);
-    }
-  }
-  
-  return processed;
+  return Object.fromEntries(
+    Object.entries(tokenGroup).map(([key, value]) => {
+      const currentPath = [...parentPath, key];
+      
+      return [
+        key,
+        isToken(value) 
+          ? processToken(value, currentPath, category)
+          : processTokenGroup(value as TokenGroup, category, currentPath)
+      ];
+    })
+  );
 }
 
 function processToken(token: Token, path: string[], category: string): Token {
-  const processed: Token = { ...token };
+  const processed: Token = {
+    ...token,
+    name: token.name || path.join('-'),
+    description: token.description || `${category} token: ${path.join(' ')}`
+  };
   
-  if (!processed.name) {
-    processed.name = path.join('-');
-  }
+  const normalizers: Record<string, (value: any, path: string[]) => any> = {
+    color: normalizeColorValue,
+    font: (value, path) => normalizeFontValue(value, path)
+  };
   
-  if (!processed.description) {
-    processed.description = `${category} token: ${path.join(' ')}`;
-  }
-
-  if (category === 'color' && typeof processed.value === 'string') {
-    processed.value = normalizeColorValue(processed.value);
-  }
-
-  if (category === 'font') {
-    processed.value = normalizeFontValue(processed.value, path);
+  if (normalizers[category]) {
+    processed.value = normalizers[category](processed.value, path);
   }
   
   return processed;
 }
 
 function normalizeColorValue(value: string): string {
-
-  if (value.startsWith('#')) {
-    return value.toLowerCase();
-  }
-
+  if (value.startsWith('#')) return value.toLowerCase();
   if (value.includes('rgba') || value.includes('hsla')) {
     return value.replace(/\s+/g, ' ').trim();
   }
-  
   return value;
 }
 
 function normalizeFontValue(value: string | number, path: string[]): string | number {
-  if (path.length === 0) return value;
+  const lastSegment = path[path.length - 1];
+
+  const fontNormalizers: Record<string, (v: any) => any> = {
+    fontSize: (v) => typeof v === 'number' ? `${v}px` : v,
+    lineHeight: (v) => typeof v === 'number' ? `${v}px` : v,
+    size: (v) => typeof v === 'number' ? `${v}rem` : v,
+    family: (v) => typeof v === 'string' ? v.replace(/([^,\s'"]+\s+[^,\s'"]+)/g, "'$1'") : v
+  };
   
-  const lastPathSegment = path[path.length - 1];
-
-  if (lastPathSegment === 'fontSize' || lastPathSegment === 'lineHeight') {
-    if (typeof value === 'string' && value.includes('px')) {
-      return value;
-    }
-    if (typeof value === 'number') {
-      return `${value}px`;
-    }
-  }
-
-  if (lastPathSegment === 'size' && typeof value === 'number') {
-    return `${value}rem`;
-  }
-
-  if (lastPathSegment === 'family' && typeof value === 'string') {
-    return value.replace(/([^,\s'"]+\s+[^,\s'"]+)/g, "'$1'");
-  }
-  
-  return value;
+  return fontNormalizers[lastSegment]?.(value) ?? value;
 }
-
-export { processTokenGroup, processToken };
