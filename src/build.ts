@@ -33,6 +33,7 @@ async function generateProjectIndex(type: 'scss' | 'css', projectName: string): 
     `${commentPrefix} ${projectName} design tokens${commentSuffix}`,
     `${importPrefix}'./variables${importSuffix}';`,
     `${importPrefix}'./classes${importSuffix}';`,
+    `${importPrefix}'./spacing${importSuffix}';`,
     ''
   ].join('\n');
   
@@ -54,6 +55,10 @@ async function generateMainIndex(type: 'scss' | 'css', projects: string[]): Prom
   const classImports = projects
     .map(project => `${importPrefix}'./${project}/classes${importSuffix}';`)
     .join('\n');
+
+  const spacingImports = projects
+    .map(project => `${importPrefix}'./${project}/spacing${importSuffix}';`)
+    .join('\n');
   
   const content = [
     `${commentPrefix} All design tokens${commentSuffix}`,
@@ -61,6 +66,9 @@ async function generateMainIndex(type: 'scss' | 'css', projects: string[]): Prom
     '',
     `${commentPrefix} All utility classes${commentSuffix}`,
     classImports,
+    '',
+    `${commentPrefix} All spacing classes${commentSuffix}`,
+    spacingImports,
     ''
   ].join('\n');
   

@@ -41,6 +41,53 @@ function createFontClassesFormat(type: 'scss' | 'css') {
   };
 }
 
+function createSpacingClassesFormat(type: 'scss' | 'css') {
+  const commentPrefix = type === 'scss' ? '//' : '/*';
+  const commentSuffix = type === 'css' ? ' */' : '';
+  
+  return function({ dictionary, options }: any): string {
+    const header = options?.showFileHeader && typeof options?.fileHeader === 'function'
+      ? options.fileHeader().map((line: string) => `${commentPrefix} ${line}${commentSuffix}`).join('\n') + '\n\n'
+      : '';
+    
+    let output = header;
+    
+    // Generate margin classes
+    output += `${commentPrefix} Margin utility classes${commentSuffix}\n`;
+    dictionary.allTokens.forEach((token: any) => {
+      if (token.path[0] === 'margin') {
+        const size = token.path[1];
+        output += `.m-${size} { margin: ${token.value}; }\n`;
+        output += `.mt-${size} { margin-top: ${token.value}; }\n`;
+        output += `.mr-${size} { margin-right: ${token.value}; }\n`;
+        output += `.mb-${size} { margin-bottom: ${token.value}; }\n`;
+        output += `.ml-${size} { margin-left: ${token.value}; }\n`;
+        output += `.mx-${size} { margin-left: ${token.value}; margin-right: ${token.value}; }\n`;
+        output += `.my-${size} { margin-top: ${token.value}; margin-bottom: ${token.value}; }\n`;
+        output += `\n`;
+      }
+    });
+    
+    // Generate padding classes
+    output += `${commentPrefix} Padding utility classes${commentSuffix}\n`;
+    dictionary.allTokens.forEach((token: any) => {
+      if (token.path[0] === 'padding') {
+        const size = token.path[1];
+        output += `.p-${size} { padding: ${token.value}; }\n`;
+        output += `.pt-${size} { padding-top: ${token.value}; }\n`;
+        output += `.pr-${size} { padding-right: ${token.value}; }\n`;
+        output += `.pb-${size} { padding-bottom: ${token.value}; }\n`;
+        output += `.pl-${size} { padding-left: ${token.value}; }\n`;
+        output += `.px-${size} { padding-left: ${token.value}; padding-right: ${token.value}; }\n`;
+        output += `.py-${size} { padding-top: ${token.value}; padding-bottom: ${token.value}; }\n`;
+        output += `\n`;
+      }
+    });
+    
+    return output;
+  };
+}
+
 StyleDictionary.registerFormat({
   name: 'scss/font-classes',
   format: createFontClassesFormat('scss')
@@ -49,6 +96,16 @@ StyleDictionary.registerFormat({
 StyleDictionary.registerFormat({
   name: 'css/font-classes',
   format: createFontClassesFormat('css')
+});
+
+StyleDictionary.registerFormat({
+  name: 'scss/spacing-classes',
+  format: createSpacingClassesFormat('scss')
+});
+
+StyleDictionary.registerFormat({
+  name: 'css/spacing-classes',
+  format: createSpacingClassesFormat('css')
 });
 
 const createProjectConfig = (projectName: string, sources: string[]) => ({
@@ -68,6 +125,11 @@ const createProjectConfig = (projectName: string, sources: string[]) => ({
           destination: 'classes.scss',
           format: 'scss/font-classes',
           options: { showFileHeader: true, fileHeader: () => getFileHeaderLines(projectName, 'Font utility classes') }
+        },
+        {
+          destination: 'spacing.scss',
+          format: 'scss/spacing-classes',
+          options: { showFileHeader: true, fileHeader: () => getFileHeaderLines(projectName, 'Spacing utility classes') }
         }
       ]
     },
@@ -84,6 +146,11 @@ const createProjectConfig = (projectName: string, sources: string[]) => ({
           destination: 'classes.css',
           format: 'css/font-classes',
           options: { showFileHeader: true, fileHeader: () => getFileHeaderLines(projectName, 'Font utility classes') }
+        },
+        {
+          destination: 'spacing.css',
+          format: 'css/spacing-classes',
+          options: { showFileHeader: true, fileHeader: () => getFileHeaderLines(projectName, 'Spacing utility classes') }
         }
       ]
     }
