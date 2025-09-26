@@ -11,13 +11,19 @@ async function generateIndexFiles(): Promise<void> {
   await Promise.all(
     projects.flatMap(projectName => [
       generateProjectIndex('scss', projectName),
-      generateProjectIndex('css', projectName)
+      generateProjectIndex('css', projectName),
+      generateJSIndex('esm', projectName),
+      generateJSIndex('cjs', projectName),
+      generateTSIndex(projectName)
     ])
   );
   
   await Promise.all([
     generateMainIndex('scss', projects),
-    generateMainIndex('css', projects)
+    generateMainIndex('css', projects),
+    generateMainJSIndex('esm', projects),
+    generateMainJSIndex('cjs', projects),
+    generateMainTSIndex(projects)
   ]);
 }
 
@@ -75,6 +81,121 @@ async function generateMainIndex(type: 'scss' | 'css', projects: string[]): Prom
   await fs.writeFile(`dist/${type}/index.${extension}`, content);
 }
 
+async function generateJSIndex(type: 'esm' | 'cjs', projectName: string): Promise<void> {
+  const indexPath = `dist/js/${type}/${projectName}/index.js`;
+  const content = type === 'esm' 
+    ? `export { tokens as default, tokens } from './tokens.js';\n`
+    : `const { tokens } = require('./tokens.js');\nmodule.exports = tokens;\nmodule.exports.tokens = tokens;\n`;
+  
+  await fs.ensureDir(path.dirname(indexPath));
+  await fs.writeFile(indexPath, content);
+}
+
+async function generateTSIndex(projectName: string): Promise<void> {
+  const indexPath = `dist/types/${projectName}/index.d.ts`;
+  const content = `export { tokens as default, tokens, DesignTokens, FontSizeToken } from './tokens.js';\n`;
+  
+  await fs.ensureDir(path.dirname(indexPath));
+  await fs.writeFile(indexPath, content);
+}
+
+async function generateMainJSIndex(type: 'esm' | 'cjs', projects: string[]): Promise<void> {
+  const indexPath = `dist/js/${type}/index.js`;
+  
+  if (type === 'esm') {
+    const imports = projects
+      .map(project => {
+        const safeName = project.replace(/-/g, '_');
+        return `import ${safeName}Tokens from './${project}/tokens.js';`;
+      })
+      .join('\n');
+    
+    const exports = projects
+      .map(project => {
+        const safeName = project.replace(/-/g, '_');
+        return `  "${project}": ${safeName}Tokens`;
+      })
+      .join(',\n');
+    
+    const content = [
+      '// All design tokens',
+      imports,
+      '',
+      'export const tokens = {',
+      exports,
+      '};',
+      '',
+      'export default tokens;',
+      ''
+    ].join('\n');
+    
+    await fs.writeFile(indexPath, content);
+  } else {
+    const requires = projects
+      .map(project => {
+        const safeName = project.replace(/-/g, '_');
+        return `const ${safeName}Tokens = require('./${project}/tokens.js');`;
+      })
+      .join('\n');
+    
+    const exports = projects
+      .map(project => {
+        const safeName = project.replace(/-/g, '_');
+        return `  "${project}": ${safeName}Tokens`;
+      })
+      .join(',\n');
+    
+    const content = [
+      '// All design tokens',
+      requires,
+      '',
+      'const tokens = {',
+      exports,
+      '};',
+      '',
+      'module.exports = tokens;',
+      'module.exports.tokens = tokens;',
+      ''
+    ].join('\n');
+    
+    await fs.writeFile(indexPath, content);
+  }
+}
+
+async function generateMainTSIndex(projects: string[]): Promise<void> {
+  const indexPath = `dist/types/index.d.ts`;
+  
+  const imports = projects
+    .map(project => {
+      const safeName = project.replace(/-/g, '_');
+      return `import { DesignTokens as ${safeName}Tokens } from './${project}/tokens.js';`;
+    })
+    .join('\n');
+  
+  const tokenInterface = projects
+    .map(project => {
+      const safeName = project.replace(/-/g, '_');
+      return `  "${project}": ${safeName}Tokens;`;
+    })
+    .join('\n');
+  
+  const content = [
+    '// All design tokens types',
+    imports,
+    '',
+    'export interface AllTokens {',
+    tokenInterface,
+    '}',
+    '',
+    'declare const tokens: AllTokens;',
+    'export default tokens;',
+    'export { tokens };',
+    ''
+  ].join('\n');
+  
+  await fs.writeFile(indexPath, content);
+}
+
 async function buildProject(projectName: string): Promise<void> {
   console.log(`🏗️  Building project: ${projectName}`);
   
@@ -103,6 +224,15 @@ async function buildProject(projectName: string): Promise<void> {
     
     await sd.buildAllPlatforms();
     await fs.remove(tempDir);
+    
+    // Convert ESM to CommonJS for cjs platform
+    const cjsTokensPath = `dist/js/cjs/${projectName}/tokens.js`;
+    if (await fs.pathExists(cjsTokensPath)) {
+      let content = await fs.readFile(cjsTokensPath, 'utf8');
+      content = content.replace('export const tokens = ', 'const tokens = ');
+      content = content.replace('export default tokens;', 'module.exports = tokens;\nmodule.exports.tokens = tokens;\nmodule.exports.default = tokens;');
+      await fs.writeFile(cjsTokensPath, content);
+    }
     
     console.log(`✅ Project ${projectName} built successfully`);
   } catch (error) {
