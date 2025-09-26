@@ -1,0 +1,56 @@
+{
+  "color": {
+    "primary": {
+      "value": "#282a7e",
+      "type": "color"
+    },
+    "secondary": {
+      "value": "#4c51bf",
+      "type": "color"
+    },
+    "neutral": {
+      "value": "#f1f2f6",
+      "type": "color"
+    },
+    "background": {
+      "value": "#1B1464",
+      "type": "color"
+    },
+    "text": {
+      "value": "#2f3542",
+      "type": "color"
+    },
+    "success": {
+      "value": "#009432",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#F79F1F",
+      "type": "color"
+    },
+    "error": {
+      "value": "#EA2027",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#4c51bf",
+      "type": "color"
+    },
+    "info": {
+      "value": "#3730a3",
+      "type": "color"
+    },
+    "muted": {
+      "value": "#6b7280",
+      "type": "color"
+    },
+    "surface": {
+      "value": "#f8fafc",
+      "type": "color"
+    },
+    "border": {
+      "value": "#d1d5db",
+      "type": "color"
+    }
+  }
+}

@@ -174,5 +174,9 @@ export const configs = {
   'pr-photo': createProjectConfig('pr-photo', [
     'figma-export/global/**/*.json',
     'figma-export/pr-photo/**/*.json'
+  ]),
+  'pr-iskierka': createProjectConfig('pr-iskierka', [
+    'figma-export/global/**/*.json',
+    'figma-export/pr-iskierka/**/*.json'
   ])
 };
