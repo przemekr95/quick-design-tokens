@@ -29,7 +29,7 @@ async function generateIndexFiles(): Promise<void> {
 
 async function generateProjectIndex(type: 'scss' | 'css', projectName: string): Promise<void> {
   const extension = type === 'scss' ? 'scss' : 'css';
-  const importPrefix = type === 'css' ? '@import ' : '@import ';
+  const importPrefix = type === 'css' ? '@import ' : '@use ';
   const importSuffix = type === 'css' ? '.css' : '';
   const commentPrefix = type === 'scss' ? '//' : '/*';
   const commentSuffix = type === 'css' ? ' */' : '';
@@ -49,7 +49,7 @@ async function generateProjectIndex(type: 'scss' | 'css', projectName: string): 
 
 async function generateMainIndex(type: 'scss' | 'css', projects: string[]): Promise<void> {
   const extension = type === 'scss' ? 'scss' : 'css';
-  const importPrefix = type === 'css' ? '@import ' : '@import ';
+  const importPrefix = type === 'css' ? '@import ' : '@use ';
   const importSuffix = type === 'css' ? '.css' : '';
   const commentPrefix = type === 'scss' ? '//' : '/*';
   const commentSuffix = type === 'css' ? ' */' : '';
