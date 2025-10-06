@@ -1,6 +1,6 @@
 {
   "name": "@przemekr95/quick-design-tokens",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Modern design tokens",
   "type": "module",
   "main": "dist/js/cjs/index.js",
